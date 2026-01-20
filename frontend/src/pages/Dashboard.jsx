@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import GlassCard from '../components/GlassCard';
 import TextReveal from '../components/TextReveal';
 import teamService from '../services/teamService';
+import toast from 'react-hot-toast';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;
@@ -155,19 +156,25 @@ const Dashboard = () => {
 
   /* ... styles ... */
 
+  import toast from 'react-hot-toast';
+
+  /* ... inside component ... */
+
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    const loadingToast = toast.loading('Initiating upload protocol...');
 
     try {
       await teamService.uploadSubmission(team._id, file, type);
       // Refresh team data
       const updatedTeam = await teamService.getMyTeam();
       setTeam(updatedTeam);
-      alert("File uplink established. Transmission complete.");
+      toast.success("File uplink established. Transmission complete.", { id: loadingToast });
     } catch (err) {
       console.error(err);
-      alert("Transmission failed. Check protocols.");
+      toast.error("Transmission failed. Check protocols.", { id: loadingToast });
     }
   };
 

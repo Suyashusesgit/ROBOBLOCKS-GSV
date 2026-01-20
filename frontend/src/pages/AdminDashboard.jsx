@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import teamService from '../services/teamService';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -153,20 +154,23 @@ const AdminDashboard = () => {
 
     const updateStatus = async (id, status) => {
         try {
+            // Optimistic update
             setTeams(teams.map(t => t._id === id ? { ...t, paymentStatus: status } : t));
             await teamService.updateTeamStatus(id, status);
+            toast.success(`Unit status updated to: ${status}`);
         } catch (err) {
-            alert("Failed to update status");
+            toast.error("Failed to update status");
         }
     };
 
     const handleSaveContent = async () => {
+        const loadingToast = toast.loading('Uploading patch...');
         try {
             const parsed = JSON.parse(content);
             await teamService.updateContent(parsed);
-            alert("Content Grid Updated Successfully");
+            toast.success("Content Grid Updated Successfully", { id: loadingToast });
         } catch (e) {
-            alert("Invalid JSON Formatting!");
+            toast.error("Invalid JSON Formatting!", { id: loadingToast });
         }
     };
 

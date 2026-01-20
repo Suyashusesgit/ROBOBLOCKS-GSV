@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -69,6 +69,66 @@ const CTAButton = styled(Link)`
   }
 `;
 
+const pulse = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+`;
+
+const CyberButton = styled(Link)`
+  position: relative;
+  padding: 0.8rem 2rem;
+  background: transparent;
+  color: #0ff;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid #0ff;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+  }
+
+  &:hover {
+    color: #000;
+    background: #0ff;
+    box-shadow: 0 0 20px #0ff;
+    
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid #0ff;
+    border-right: 2px solid #0ff;
+    transition: all 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const Navbar = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -114,7 +174,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <NavLink to="/login">Login</NavLink>
+            <CyberButton to="/login">Login</CyberButton>
             <CTAButton to="/register">Register Team</CTAButton>
           </>
         )}

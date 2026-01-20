@@ -73,6 +73,7 @@ const AppContent = () => {
                 <ThemeSwitcher />
               </SmoothScroll>
             </Router>
+          </ErrorBoundary>
         </SoundProvider>
       </AuthProvider>
     </StyledThemeProvider>

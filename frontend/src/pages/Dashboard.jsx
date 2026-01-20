@@ -152,13 +152,7 @@ const Dashboard = () => {
     fetchTeam();
   }, []);
 
-  /* ... imports ... */
 
-  /* ... styles ... */
-
-  import toast from 'react-hot-toast';
-
-  /* ... inside component ... */
 
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];

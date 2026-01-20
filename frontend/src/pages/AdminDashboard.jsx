@@ -231,9 +231,9 @@ const AdminDashboard = () => {
                                         <ActionButton approve onClick={() => updateStatus(team._id, 'verified')}>Approve</ActionButton>
                                         <ActionButton onClick={() => updateStatus(team._id, 'rejected')}>Reject</ActionButton>
                                     </Td>
-                                </tr>
+                                tr>
                             ))}
-                        </tbody>
+                                </tbody>
                     </Table>
                 </TableContainer>
             ) : (

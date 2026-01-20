@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Nav = styled(motion.nav)`
   position: fixed;
@@ -71,6 +72,8 @@ const CTAButton = styled(Link)`
 const Navbar = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest > 50) {
@@ -79,6 +82,11 @@ const Navbar = () => {
       setIsScrolled(false);
     }
   });
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <Nav className={isScrolled ? 'scrolled' : ''}>
@@ -92,7 +100,25 @@ const Navbar = () => {
         <NavLink to="/leaderboard">Leaderboard</NavLink>
         <NavLink to="/faq">FAQ</NavLink>
       </NavLinks>
-      <CTAButton to="/register">Register Team</CTAButton>
+
+      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        {currentUser ? (
+          <>
+            {currentUser.role === 'admin' && (
+              <NavLink to="/admin" style={{ color: '#ff003c' }}>Admin</NavLink>
+            )}
+            <NavLink to="/dashboard">Dashboard</NavLink>
+            <CTAButton as="button" onClick={handleLogout} style={{ border: 'none', cursor: 'pointer' }}>
+              Logout
+            </CTAButton>
+          </>
+        ) : (
+          <>
+            <NavLink to="/login">Login</NavLink>
+            <CTAButton to="/register">Register Team</CTAButton>
+          </>
+        )}
+      </div>
     </Nav>
   );
 };

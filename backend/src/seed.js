@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require('path');
 const connectDB = require('./config/db');
 const User = require('./models/User');
 const Team = require('./models/Team');
 const SiteContent = require('./models/SiteContent');
 
-// Load env vars
-dotenv.config();
+// Load env vars from the backend root (one level up from src)
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 // Connect to DB
 connectDB();

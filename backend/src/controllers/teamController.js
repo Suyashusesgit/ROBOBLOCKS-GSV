@@ -55,6 +55,45 @@ const registerTeam = asyncHandler(async (req, res) => {
     res.status(201).json(team);
 });
 
+// @desc    Upload project files (Abstract/CAD)
+// @route   POST /api/v1/teams/:id/upload
+// @access  Private (Team Leader)
+const uploadSubmission = asyncHandler(async (req, res) => {
+    const team = await Team.findById(req.params.id);
+
+    if (!team) {
+        res.status(404);
+        throw new Error('Team not found');
+    }
+
+    // Verify ownership (or admin override)
+    if (team.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        res.status(401);
+        throw new Error('Not authorized to update this team');
+    }
+
+    if (!req.file) {
+        res.status(400);
+        throw new Error('Please upload a file');
+    }
+
+    const type = req.body.type; // 'abstract' or 'cad'
+
+    if (type === 'abstract') {
+        team.abstractFile = req.file.path;
+    } else if (type === 'cad') {
+        team.cadFile = req.file.path;
+    } else {
+        res.status(400);
+        throw new Error('Invalid submission type');
+    }
+
+    team.submissionStatus = 'submitted';
+    await team.save();
+
+    res.status(200).json(team);
+});
+
 // @desc    Get current user's team
 // @route   GET /api/v1/teams/me
 // @access  Private
@@ -134,5 +173,6 @@ module.exports = {
     getTeams,
     getPublicTeams,
     updateTeamStatus,
-    updateTeamScore
+    updateTeamScore,
+    uploadSubmission
 };

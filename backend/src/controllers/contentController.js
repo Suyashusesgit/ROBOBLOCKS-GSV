@@ -15,6 +15,22 @@ const getContent = asyncHandler(async (req, res) => {
     res.status(200).json(content);
 });
 
+const updateContent = asyncHandler(async (req, res) => {
+    let content = await SiteContent.findOne({ identifier: 'main' });
+
+    if (!content) {
+        // Create if doesn't exist (fallback)
+        content = new SiteContent({ identifier: 'main', ...req.body });
+    } else {
+        // Update fields
+        Object.assign(content, req.body);
+    }
+
+    await content.save();
+    res.status(200).json(content);
+});
+
 module.exports = {
-    getContent
+    getContent,
+    updateContent
 };

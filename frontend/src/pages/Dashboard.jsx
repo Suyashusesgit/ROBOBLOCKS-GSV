@@ -71,12 +71,12 @@ const StatusBadge = styled.span`
   text-transform: uppercase;
   background: rgba(0,0,0,0.5);
   border: 1px solid ${props =>
-        props.status === 'verified' ? '#00ff6a' :
-            props.status === 'rejected' ? '#ff003c' : '#ffce00'};
+    props.status === 'verified' ? '#00ff6a' :
+      props.status === 'rejected' ? '#ff003c' : '#ffce00'};
   color: #fff;
   box-shadow: 0 0 15px ${props =>
-        props.status === 'verified' ? 'rgba(0,255,106,0.2)' :
-            props.status === 'rejected' ? 'rgba(255,0,60,0.2)' : 'rgba(255,206,0,0.2)'};
+    props.status === 'verified' ? 'rgba(0,255,106,0.2)' :
+      props.status === 'rejected' ? 'rgba(255,0,60,0.2)' : 'rgba(255,206,0,0.2)'};
 
   &::before {
     content: '';
@@ -84,11 +84,11 @@ const StatusBadge = styled.span`
     height: 6px;
     border-radius: 50%;
     background: ${props =>
-        props.status === 'verified' ? '#00ff6a' :
-            props.status === 'rejected' ? '#ff003c' : '#ffce00'};
+    props.status === 'verified' ? '#00ff6a' :
+      props.status === 'rejected' ? '#ff003c' : '#ffce00'};
     box-shadow: 0 0 10px ${props =>
-        props.status === 'verified' ? '#00ff6a' :
-            props.status === 'rejected' ? '#ff003c' : '#ffce00'};
+    props.status === 'verified' ? '#00ff6a' :
+      props.status === 'rejected' ? '#ff003c' : '#ffce00'};
   }
 `;
 
@@ -132,88 +132,155 @@ const MemberRow = styled.div`
 `;
 
 const Dashboard = () => {
-    const [team, setTeam] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [team, setTeam] = useState(null);
+  const [loading, setLoading] = useState(true);
 
 
-    useEffect(() => {
-        const fetchTeam = async () => {
-            try {
-                const data = await teamService.getMyTeam();
-                setTeam(data);
-            } catch (err) {
-                console.error("Failed to fetch team", err);
-                setTeam(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTeam();
-    }, []);
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const data = await teamService.getMyTeam();
+        setTeam(data);
+      } catch (err) {
+        console.error("Failed to fetch team", err);
+        setTeam(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeam();
+  }, []);
 
-    if (loading) return <DashboardContainer>Loading...</DashboardContainer>;
-    if (!team) return <DashboardContainer>No team data.</DashboardContainer>;
+  /* ... imports ... */
 
-    return (
-        <DashboardContainer>
-            <Header>
-                <div>
-                    <label style={{ color: 'var(--color-primary)', fontSize: '0.8rem', letterSpacing: '0.2em' }}>COMMAND CENTER</label>
-                    <TextReveal><Title>DASHBOARD</Title></TextReveal>
-                </div>
-                <StatusBadge status={team.paymentStatus}>{team.paymentStatus}</StatusBadge>
-            </Header>
+  /* ... styles ... */
 
-            <Grid>
-                {/* Team Info Column */}
-                <div style={{ gridColumn: 'span 4' }}>
-                    <GlassCard
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        <SectionTitle>Unit Details</SectionTitle>
-                        <DataList>
-                            <DataItem>
-                                <Label>Designation</Label>
-                                <Value>{team.teamName}</Value>
-                            </DataItem>
-                            <DataItem>
-                                <Label>Affiliation</Label>
-                                <Value>{team.institute}</Value>
-                            </DataItem>
-                            <DataItem>
-                                <Label>Comms Link</Label>
-                                <Value>{team.leaderPhone}</Value>
-                            </DataItem>
-                        </DataList>
-                    </GlassCard>
-                </div>
+  const handleUpload = async (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-                {/* Members Column */}
-                <div style={{ gridColumn: 'span 8' }}>
-                    <GlassCard
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3 }}
-                    >
-                        <SectionTitle>Squad Roster</SectionTitle>
-                        <div style={{ display: 'grid', gap: '1rem' }}>
-                            {team.members.map((member, i) => (
-                                <MemberRow key={i}>
-                                    <div>
-                                        <Value style={{ fontSize: '1rem' }}>{member.name}</Value>
-                                        <Label style={{ display: 'block', marginTop: '0.2rem' }}>{member.email}</Label>
-                                    </div>
-                                    <Label style={{ color: 'var(--color-primary)' }}>{member.role || 'Operator'}</Label>
-                                </MemberRow>
-                            ))}
-                        </div>
-                    </GlassCard>
-                </div>
-            </Grid>
-        </DashboardContainer>
-    );
+    try {
+      await teamService.uploadSubmission(team._id, file, type);
+      // Refresh team data
+      const updatedTeam = await teamService.getMyTeam();
+      setTeam(updatedTeam);
+      alert("File uplink established. Transmission complete.");
+    } catch (err) {
+      console.error(err);
+      alert("Transmission failed. Check protocols.");
+    }
+  };
+
+  if (loading) return <DashboardContainer>Loading...</DashboardContainer>;
+  if (!team) return <DashboardContainer>No team data.</DashboardContainer>;
+
+  return (
+    <DashboardContainer>
+      <Header>
+        <div>
+          <label style={{ color: 'var(--color-primary)', fontSize: '0.8rem', letterSpacing: '0.2em' }}>COMMAND CENTER</label>
+          <TextReveal><Title>DASHBOARD</Title></TextReveal>
+        </div>
+        <StatusBadge status={team.paymentStatus}>{team.paymentStatus}</StatusBadge>
+      </Header>
+
+      <Grid>
+        {/* Team Info Column */}
+        <div style={{ gridColumn: 'span 4' }}>
+          <GlassCard
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <SectionTitle>Unit Details</SectionTitle>
+            <DataList>
+              <DataItem>
+                <Label>Designation</Label>
+                <Value>{team.teamName}</Value>
+              </DataItem>
+              <DataItem>
+                <Label>Affiliation</Label>
+                <Value>{team.institute}</Value>
+              </DataItem>
+              <DataItem>
+                <Label>Comms Link</Label>
+                <Value>{team.leaderPhone}</Value>
+              </DataItem>
+            </DataList>
+          </GlassCard>
+        </div>
+
+        {/* Submissions Column (New) */}
+        <div style={{ gridColumn: 'span 4' }}>
+          <GlassCard
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
+            <SectionTitle>Mission Data</SectionTitle>
+            <DataList>
+              {/* Abstract Upload */}
+              <DataItem>
+                <Label>Abstract Protocol</Label>
+                {team.abstractFile ? (
+                  <Value style={{ color: '#00ff6a' }}>UPLOADED</Value>
+                ) : (
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => handleUpload(e, 'abstract')}
+                    style={{ color: '#fff' }}
+                  />
+                )}
+              </DataItem>
+
+              {/* CAD Upload */}
+              <DataItem>
+                <Label>Blueprints (CAD)</Label>
+                {team.cadFile ? (
+                  <Value style={{ color: '#00ff6a' }}>SECURED</Value>
+                ) : (
+                  <input
+                    type="file"
+                    accept=".zip,.rar"
+                    onChange={(e) => handleUpload(e, 'cad')}
+                    style={{ color: '#fff' }}
+                  />
+                )}
+              </DataItem>
+
+              <DataItem>
+                <Label>Mission Status</Label>
+                <Value>{team.submissionStatus || 'PENDING'}</Value>
+              </DataItem>
+            </DataList>
+          </GlassCard>
+        </div>
+
+        {/* Members Column */}
+        <div style={{ gridColumn: 'span 4' }}>
+          <GlassCard
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <SectionTitle>Squad Roster</SectionTitle>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+              {team.members.map((member, i) => (
+                <MemberRow key={i}>
+                  <div>
+                    <Value style={{ fontSize: '1rem' }}>{member.name}</Value>
+                    <Label style={{ display: 'block', marginTop: '0.2rem' }}>{member.email}</Label>
+                  </div>
+                  <Label style={{ color: 'var(--color-primary)' }}>{member.role || 'Operator'}</Label>
+                </MemberRow>
+              ))}
+            </div>
+          </GlassCard>
+        </div>
+      </Grid>
+    </DashboardContainer>
+  );
 };
 
 export default Dashboard;

@@ -13,24 +13,21 @@ const storage = multer.diskStorage({
 
 // Check file type
 function checkFileType(file, cb) {
-    // Allowed ext
-    const filetypes = /jpeg|jpg|png|pdf/;
-    // Check ext
+    const filetypes = /jpeg|jpg|png|pdf|zip|rar|7z/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    // Check mime
-    const mimetype = filetypes.test(file.mimetype);
+    // Mime check often fails for zips in some envs, rely on ext or allow 'application/octet-stream'
 
-    if (mimetype && extname) {
+    if (extname) {
         return cb(null, true);
     } else {
-        cb('Error: Images/PDFs Only!');
+        cb('Error: Images, PDFs, or Archives (zip/rar) Only!');
     }
 }
 
 // Init upload
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 5000000 }, // 5MB limit
+    limits: { fileSize: 10000000 }, // 10MB limit
     fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
     }

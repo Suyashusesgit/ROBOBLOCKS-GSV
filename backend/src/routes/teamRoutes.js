@@ -7,7 +7,8 @@ const {
     getPublicTeams,
 
     updateTeamStatus,
-    updateTeamScore
+    updateTeamScore,
+    uploadSubmission
 } = require('../controllers/teamController');
 const { protect, admin } = require('../middlewares/authMiddleware');
 const upload = require('../middlewares/uploadMiddleware');
@@ -22,5 +23,6 @@ router.get('/me', protect, getMyTeam);
 
 router.put('/:id/status', protect, admin, updateTeamStatus);
 router.put('/:id/score', protect, admin, updateTeamScore);
+router.post('/:id/upload', protect, upload.single('file'), uploadSubmission);
 
 module.exports = router;

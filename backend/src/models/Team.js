@@ -34,6 +34,16 @@ const teamSchema = new mongoose.Schema({
         enum: ['pending', 'verified', 'rejected'],
         default: 'pending'
     },
+
+    // Phase 3: Project Submissions
+    abstractFile: { type: String }, // Path to abstract PDF
+    cadFile: { type: String },      // Path to CAD zip
+    submissionStatus: {
+        type: String,
+        enum: ['pending', 'submitted', 'reviewing', 'approved'],
+        default: 'pending'
+    },
+
     score: {
         type: Number,
         default: 0

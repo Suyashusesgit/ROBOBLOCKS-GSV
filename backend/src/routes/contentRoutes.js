@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { getContent } = require('../controllers/contentController');
+const { getContent, updateContent } = require('../controllers/contentController');
+const { protect, admin } = require('../middlewares/authMiddleware');
 
-router.get('/', getContent);
+router.route('/')
+    .get(getContent)
+    .put(protect, admin, updateContent);
 
 module.exports = router;

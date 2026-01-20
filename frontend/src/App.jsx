@@ -26,47 +26,38 @@ import HackerMode from './components/HackerMode';
 
 import { AuthProvider } from './context/AuthContext';
 
-import Preloader from './components/Preloader';
-
 const AppContent = () => {
   const { theme } = React.useContext(ThemeContext);
-  const [loading, setLoading] = React.useState(true);
 
   return (
     <StyledThemeProvider theme={theme}>
       <AuthProvider>
         <SoundProvider>
-          {loading ? (
-            <Preloader onComplete={() => setLoading(false)} />
-          ) : (
-            <>
-              <GlobalStyles />
-              <Cursor />
-              <HackerMode />
-              <Router>
-                <SmoothScroll>
-                  <Routes>
-                    <Route path="/" element={<Layout />}>
-                      <Route index element={<Home />} />
-                      <Route path="register" element={<Register />} />
-                      <Route path="dashboard" element={<Dashboard />} />
-                      <Route path="admin" element={<AdminDashboard />} />
-                      <Route path="login" element={<Login />} />
-                      <Route path="signup" element={<Signup />} />
-                      <Route path="about" element={<About />} />
-                      <Route path="rules" element={<Rules />} />
-                      <Route path="teams" element={<Teams />} />
-                      <Route path="gallery" element={<Gallery />} />
-                      <Route path="schedule" element={<Schedule />} />
-                      <Route path="leaderboard" element={<Leaderboard />} />
-                      <Route path="faq" element={<FAQ />} />
-                    </Route>
-                  </Routes>
-                  <ThemeSwitcher />
-                </SmoothScroll>
-              </Router>
-            </>
-          )}
+          <GlobalStyles />
+          <Cursor />
+          <HackerMode />
+          <Router>
+            <SmoothScroll>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path="register" element={<Register />} />
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="admin" element={<AdminDashboard />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<Signup />} />
+                  <Route path="about" element={<About />} />
+                  <Route path="rules" element={<Rules />} />
+                  <Route path="teams" element={<Teams />} />
+                  <Route path="gallery" element={<Gallery />} />
+                  <Route path="schedule" element={<Schedule />} />
+                  <Route path="leaderboard" element={<Leaderboard />} />
+                  <Route path="faq" element={<FAQ />} />
+                </Route>
+              </Routes>
+              <ThemeSwitcher />
+            </SmoothScroll>
+          </Router>
         </SoundProvider>
       </AuthProvider>
     </StyledThemeProvider>

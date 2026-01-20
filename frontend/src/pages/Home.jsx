@@ -1,28 +1,33 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Hero from '../components/Hero';
 import styled from 'styled-components';
-
 import Timeline from '../components/Timeline';
-
-const Section = styled.section`
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-top: 1px solid var(--color-border);
-`;
-
 import Sponsors from '../components/Sponsors';
 import Organizers from '../components/Organizers';
 import HorizontalScroll from '../components/HorizontalScroll';
+import teamService from '../services/teamService';
 
 const Home = () => {
+    const [content, setContent] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const data = await teamService.getSiteContent();
+                if (data) setContent(data);
+            } catch (e) {
+                console.error("Failed to load Home content", e);
+            }
+        };
+        load();
+    }, []);
+
     return (
         <>
-            <Hero />
-            <HorizontalScroll />
-            <Sponsors />
-            <Organizers />
+            <Hero data={content?.hero} />
+            <HorizontalScroll data={content?.timeline} />
+            <Sponsors data={content?.sponsors} />
+            <Organizers data={content?.organizers} />
         </>
     );
 };

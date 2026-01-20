@@ -20,6 +20,36 @@ connectDB();
 // 1. SITE CONTENT (Home, About, Schedule, FAQ, Gallery)
 const seedContent = {
     identifier: 'main', // Singleton ID
+
+    // HOME PAGE
+    hero: {
+        title: "ROBOBLOCKS",
+        subtitle: "National Level Robotics Event",
+        countdownTarget: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) // 14 days from now
+    },
+    timeline: [
+        { year: "PHASE 1", title: "Registration", desc: "Teams register and submit their initial robot concepts for review. Access to documentation and grid specs." },
+        { year: "PHASE 2", title: "Idea Submission", desc: "Detailed CAD designs and strategy documents are submitted. Top 50 teams qualify for the technical interview." },
+        { year: "PHASE 3", title: "Grand Finale", desc: "The final showdown. 48 hours of non-stop robotics action in the RoboBlocks Arena." }
+    ],
+    sponsors: [
+        { name: "TECH GIANT 1", tier: "Title" },
+        { name: "TECH GIANT 2", tier: "Title" },
+        { name: "INNOVATE 1", tier: "Gold" },
+        { name: "INNOVATE 2", tier: "Gold" },
+        { name: "INNOVATE 3", tier: "Gold" },
+        { name: "STARTUP 1", tier: "Silver" },
+        { name: "STARTUP 2", tier: "Silver" },
+        { name: "STARTUP 3", tier: "Silver" },
+        { name: "STARTUP 4", tier: "Silver" }
+    ],
+    organizers: [
+        { name: "Alex Chen", role: "Event Lead", contact: "alex@roboblocks.com" },
+        { name: "Sarah Jones", role: "Technical Head", contact: "sarah@roboblocks.com" },
+        { name: "Mike Ross", role: "Operations", contact: "mike@roboblocks.com" }
+    ],
+
+    // OTHER PAGES
     about: {
         mission: "**RoboBlocks** is the premier national-level robotics event designed to test the limits of mechanical engineering and autonomous code.",
         story: "Set in the year 2140, teams must engineer units capable of navigating the \"CyberGrid\"—a hazardous digital-physical terrain.",

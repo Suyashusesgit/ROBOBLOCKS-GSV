@@ -15,7 +15,11 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background: radial-gradient(circle at 50% 0%, #151520 0%, #050507 100%);
+    background-color: #050505;
+    background-image: 
+        linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
     background-attachment: fixed;
     color: var(--color-text);
     font-family: var(--font-main);
@@ -24,11 +28,19 @@ export const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     cursor: none;
     
+    /* Subtle moving grid animation */
+    animation: gridMove 20s linear infinite;
+    
     /* Fix layout shift */
     display: flex;
     justify-content: center;
     width: 100vw;
     min-height: 100vh;
+  }
+  
+  @keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
   }
 
   #root {

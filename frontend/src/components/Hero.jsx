@@ -1,3 +1,4 @@
+import DecryptText from "./DecryptText";
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -97,10 +98,12 @@ const Hero = ({ data }) => {
         </Suspense>
       </CanvasContainer>
 
+
+
       <HeroContent>
         <TextReveal delay={0.2}>
           <Title as="h1">
-            <GlitchText>{title}</GlitchText>
+            <DecryptText>{title}</DecryptText>
           </Title>
         </TextReveal>
         <TextReveal delay={0.4}>

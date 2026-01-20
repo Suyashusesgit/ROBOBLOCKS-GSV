@@ -1,3 +1,4 @@
+import DecryptText from "../components/DecryptText";
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
@@ -110,7 +111,7 @@ const Gallery = () => {
       <HeaderWrapper>
         <TextReveal>
           <h1 style={{ fontSize: '4rem', textShadow: '0 0 20px var(--color-primary)' }}>
-            VISUAL LOGS
+            <DecryptText>VISUAL LOGS</DecryptText>
           </h1>
         </TextReveal>
       </HeaderWrapper>

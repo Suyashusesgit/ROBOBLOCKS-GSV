@@ -1,3 +1,4 @@
+import DecryptText from "../components/DecryptText";
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -67,7 +68,7 @@ export const About = () => {
     return (
         <PageContainer>
             <TextReveal>
-                <Title>mission_briefing</Title>
+                <Title><DecryptText>mission_briefing</DecryptText></Title>
             </TextReveal>
             <ContentWrapper
                 initial={{ opacity: 0, y: 30 }}

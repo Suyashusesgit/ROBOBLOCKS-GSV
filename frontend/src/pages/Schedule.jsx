@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import TextReveal from '../components/TextReveal';
 import Tilt from 'react-parallax-tilt';
+import DecryptText from '../components/DecryptText';
 
 const PageContainer = styled.div`
   min-height: 200vh;
@@ -123,7 +124,7 @@ const Schedule = () => {
   return (
     <PageContainer>
       <TextReveal>
-        <h1>Mission Timeline</h1>
+        <h1><DecryptText>Mission Timeline</DecryptText></h1>
       </TextReveal>
 
       <TimelineWrapper ref={ref}>

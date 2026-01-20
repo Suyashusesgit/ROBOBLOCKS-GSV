@@ -12,12 +12,24 @@ const CursorWrapper = styled.div`
 `;
 
 const CursorDot = styled.div`
-  width: 8px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
   position: absolute;
   transform: translate(-50%, -50%);
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -50%;
+    width: 200%;
+    height: 2px;
+    background: white;
+    transform: translateY(-50%);
+  }
 `;
 
 const CursorRing = styled.div`
@@ -73,11 +85,12 @@ const Cursor = () => {
 
     useEffect(() => {
         if (hovered) {
-            gsap.to(ringRef.current, { scale: 1.5, duration: 0.3 });
-            gsap.to(dotRef.current, { scale: 0, duration: 0.3 });
+            gsap.to(ringRef.current, { scale: 1.5, opacity: 1, borderColor: '#0f0', duration: 0.3 });
+            gsap.to(dotRef.current, { rotation: 45, scale: 1.2, borderColor: '#0f0', duration: 0.3 });
+            // Add a "locked on" text if you wanted, but keeping it visual for now
         } else {
-            gsap.to(ringRef.current, { scale: 1, duration: 0.3 });
-            gsap.to(dotRef.current, { scale: 1, duration: 0.3 });
+            gsap.to(ringRef.current, { scale: 1, opacity: 0.3, borderColor: '#fff', duration: 0.3 });
+            gsap.to(dotRef.current, { rotation: 0, scale: 1, borderColor: '#fff', duration: 0.3 });
         }
     }, [hovered]);
 

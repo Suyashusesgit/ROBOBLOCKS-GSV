@@ -69,8 +69,8 @@ const Contact = styled.p`
   font-size: 0.9rem;
 `;
 
-const Organizers = () => {
-  const team = [
+const Organizers = ({ data }) => {
+  const team = data || [
     { name: "Alex Chen", role: "Event Lead", contact: "alex@roboblocks.com" },
     { name: "Sarah Jones", role: "Technical Head", contact: "sarah@roboblocks.com" },
     { name: "Mike Ross", role: "Operations", contact: "mike@roboblocks.com" }

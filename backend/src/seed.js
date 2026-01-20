@@ -7,7 +7,7 @@ const Team = require('./models/Team');
 const SiteContent = require('./models/SiteContent');
 
 // Load env vars from the backend root (one level up from src)
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 // Connect to DB
 connectDB();

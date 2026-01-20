@@ -70,9 +70,15 @@ const events = [
   { year: "PHASE 3", title: "Grand Finale", desc: "The final showdown. 48 hours of non-stop robotics action in the RoboBlocks Arena." },
 ];
 
-const HorizontalScroll = () => {
+const HorizontalScroll = ({ data }) => {
   const sectionRef = useRef(null);
   const triggerRef = useRef(null);
+
+  const events = data || [
+    { year: "PHASE 1", title: "Registration", desc: "Teams register and submit their initial robot concepts for review. Access to documentation and grid specs." },
+    { year: "PHASE 2", title: "Idea Submission", desc: "Detailed CAD designs and strategy documents are submitted. Top 50 teams qualify for the technical interview." },
+    { year: "PHASE 3", title: "Grand Finale", desc: "The final showdown. 48 hours of non-stop robotics action in the RoboBlocks Arena." },
+  ];
 
   useEffect(() => {
     const pin = gsap.fromTo(
@@ -81,13 +87,13 @@ const HorizontalScroll = () => {
         translateX: 0,
       },
       {
-        translateX: "-200vw", // Move by 2 screen widths (total 3 panels)
+        translateX: `-${(events.length - 1) * 100}vw`,
         ease: "none",
         duration: 1,
         scrollTrigger: {
           trigger: triggerRef.current,
           start: "top top",
-          end: "+=2000", // Scroll distance
+          end: `+=${events.length * 1000}`,
           scrub: 0.6,
           pin: true,
         },
@@ -96,11 +102,11 @@ const HorizontalScroll = () => {
     return () => {
       pin.kill();
     };
-  }, []);
+  }, [events.length]);
 
   return (
     <SectionWrapper ref={triggerRef}>
-      <Container ref={sectionRef}>
+      <Container ref={sectionRef} style={{ width: `${events.length * 100}%` }}>
         {events.map((event, index) => (
           <Panel key={index}>
             <Year>{event.year}</Year>

@@ -66,42 +66,43 @@ const SponsorLogo = styled.div`
   transform: translateZ(20px);
 `;
 
-const Sponsors = () => {
+const Sponsors = ({ data }) => {
+  const sponsors = data || [
+    { name: "TECH GIANT 1", tier: "Title" },
+    { name: "TECH GIANT 2", tier: "Title" },
+    { name: "INNOVATE 1", tier: "Gold" },
+    { name: "INNOVATE 2", tier: "Gold" },
+    { name: "INNOVATE 3", tier: "Gold" },
+    { name: "STARTUP 1", tier: "Silver" },
+  ];
+
+  const renderTier = (tierName) => {
+    return sponsors.filter(s => s.tier === tierName).map((s, i) => (
+      <StyledTiltCard key={i}>
+        <SponsorCardContent>
+          <SponsorLogo>{s.name}</SponsorLogo>
+        </SponsorCardContent>
+      </StyledTiltCard>
+    ));
+  };
+
   return (
     <Section>
       <Title>Our Sponsors</Title>
 
       <TierTitle>Title Sponsors</TierTitle>
       <SponsorsGrid>
-        {[1, 2].map((i) => (
-          <StyledTiltCard key={i}>
-            <SponsorCardContent>
-              <SponsorLogo>TECH GIANT {i}</SponsorLogo>
-            </SponsorCardContent>
-          </StyledTiltCard>
-        ))}
+        {renderTier("Title")}
       </SponsorsGrid>
 
       <TierTitle>Gold Sponsors</TierTitle>
       <SponsorsGrid>
-        {[1, 2, 3].map((i) => (
-          <StyledTiltCard key={i}>
-            <SponsorCardContent>
-              <SponsorLogo>INNOVATE {i}</SponsorLogo>
-            </SponsorCardContent>
-          </StyledTiltCard>
-        ))}
+        {renderTier("Gold")}
       </SponsorsGrid>
 
       <TierTitle>Silver Sponsors</TierTitle>
       <SponsorsGrid>
-        {[1, 2, 3, 4].map((i) => (
-          <StyledTiltCard key={i}>
-            <SponsorCardContent>
-              <SponsorLogo>STARTUP {i}</SponsorLogo>
-            </SponsorCardContent>
-          </StyledTiltCard>
-        ))}
+        {renderTier("Silver")}
       </SponsorsGrid>
     </Section>
   );

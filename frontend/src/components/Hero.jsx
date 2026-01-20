@@ -86,7 +86,9 @@ const Countdown = styled(motion.div)`
   }
 `;
 
-const Hero = () => {
+const Hero = ({ data }) => {
+  const { title = "ROBOBLOCKS", subtitle = "National Level Robotics Event", countdownTarget } = data || {};
+
   return (
     <HeroSection>
       <CanvasContainer>
@@ -98,12 +100,12 @@ const Hero = () => {
       <HeroContent>
         <TextReveal delay={0.2}>
           <Title as="h1">
-            <GlitchText>ROBOBLOCKS</GlitchText>
+            <GlitchText>{title}</GlitchText>
           </Title>
         </TextReveal>
         <TextReveal delay={0.4}>
           <Subtitle as="p">
-            National Level Robotics Event
+            {subtitle}
           </Subtitle>
         </TextReveal>
 

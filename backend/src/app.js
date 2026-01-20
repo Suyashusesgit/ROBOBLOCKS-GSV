@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Static folder for uploads
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// Static folder for uploads (Commented out for Vercel Serverless environment)
+// app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
 app.get('/', (req, res) => {

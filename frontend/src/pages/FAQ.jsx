@@ -85,13 +85,21 @@ const Answer = styled(motion.div)`
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const questions = [
-    { q: "INIT_PARAMETER: PARTICIPATION_CRITERIA", a: "Target demographic: Students aged 14-22. Status: High School or Undergraduate. Verification required." },
-    { q: "UNIT_CONFIGURATION: SQUAD_SIZE", a: "Squad limits: Min 3 / Max 5 units per team. Cross-institutional protocols are enabled and encouraged." },
-    { q: "RESOURCE_ALLOCATION: ENTRY_FEE", a: "Processing fee: $50 credits per team. Includes standard hardware kit and mainframe access credentials." },
-    { q: "HARDWARE_SPECS: BYOD_POLICY", a: "Basic toolsets provided on-site. Custom hardware modules and processing units (Laptops) must be provisioned by the team." },
-    { q: "LOGISTICS: ACCOMMODATION", a: "Dormitory access provided for out-of-sector teams. Request via portal utilizing Form-7B." }
-  ];
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const loadContent = async () => {
+      try {
+        const content = await import('../services/teamService').then(m => m.default.getSiteContent());
+        if (content && content.faqs) {
+          setQuestions(content.faqs);
+        }
+      } catch (err) {
+        console.error("Failed to load FAQs", err);
+      }
+    };
+    loadContent();
+  }, []);
 
   return (
     <PageContainer>

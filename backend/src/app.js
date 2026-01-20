@@ -21,5 +21,6 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/v1/auth', require('./routes/authRoutes'));
 app.use('/api/v1/teams', require('./routes/teamRoutes'));
+app.use('/api/v1/content', require('./routes/contentRoutes'));
 
 module.exports = app;

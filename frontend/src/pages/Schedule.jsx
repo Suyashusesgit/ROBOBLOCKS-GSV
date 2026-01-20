@@ -92,16 +92,21 @@ const Desc = styled.p`
 const Schedule = () => {
 
   // Rich Sci-Fi Lore Data
-  const events = [
-    { time: "08:00", title: "System Initialization", desc: "All units power on. Network handshake protocols initiated across the arena." },
-    { time: "09:30", title: "Diagnostic Checks", desc: "Mandatory hardware inspection. Laser calibration and gyroscope leveling." },
-    { time: "10:00", title: "Sector A: Obstacle Matrix", desc: "First wave of autonomous navigation through the debris field simulation." },
-    { time: "12:00", title: "Coolant Refresh", desc: "Scheduled downtime for biomass (human) refueling and thermal regulation." },
-    { time: "13:30", title: "Sector B: Combat Logic", desc: "Competitive algorithms activated. Capture-the-flag scenarios in the central node." },
-    { time: "15:00", title: "Glitch Hour", desc: "Surprise random variable injection. Teams must adapt code on the fly to simulated EMP blasts." },
-    { time: "17:00", title: "Final Compile", desc: "Score aggregation. Top 8 neural networks advance to the Grand Mainframe Event." },
-    { time: "19:00", title: "System Shutdown", desc: "Award ceremony and data archiving. Safe mode enabled." }
-  ];
+  const [events, setEvents] = React.useState([]);
+
+  React.useEffect(() => {
+    const loadContent = async () => {
+      try {
+        const content = await import('../services/teamService').then(m => m.default.getSiteContent());
+        if (content && content.schedule) {
+          setEvents(content.schedule);
+        }
+      } catch (err) {
+        console.error("Failed to load Schedule", err);
+      }
+    };
+    loadContent();
+  }, []);
 
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({

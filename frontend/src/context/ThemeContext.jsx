@@ -5,13 +5,13 @@ export const ThemeContext = createContext();
 export const themes = {
     premium: {
         name: 'premium',
-        '--color-bg': '#0a0a0a',
-        '--color-text': '#ededed',
+        '--color-bg': '#050507', // Deep rich dark
+        '--color-text': '#f0f0f0', // Soft high-contrast white
         '--color-primary': '#ff2a5d', // Vibrant red/pink
         '--color-secondary': '#2a2aff', // Deep blue
         '--color-accent': '#00f0ff', // Cyan
-        '--color-glass': 'rgba(10, 10, 10, 0.8)',
-        '--color-border': 'rgba(255, 255, 255, 0.1)',
+        '--color-glass': 'rgba(20, 20, 30, 0.7)', // Bluish glass
+        '--color-border': 'rgba(255, 255, 255, 0.15)', // Subtle border
         '--font-main': "'Inter', sans-serif",
         '--font-heading': "'Orbitron', sans-serif",
         '--podium-gold': 'linear-gradient(to bottom, #d4af37, #aa8c2c)',

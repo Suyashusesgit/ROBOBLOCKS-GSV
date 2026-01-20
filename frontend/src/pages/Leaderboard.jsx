@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import TextReveal from '../components/TextReveal';
 import Tilt from 'react-parallax-tilt';
+import teamService from '../services/teamService';
 
 const PageContainer = styled.div`
   padding: 8rem 2rem;
@@ -37,6 +38,7 @@ const PodiumStep = styled(motion.div)`
   border-radius: 8px 8px 0 0;
   position: relative;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  cursor: pointer;
   
   /* Dynamic Theme Gradients */
   background: ${props =>
@@ -57,6 +59,8 @@ const Avatar = styled.div`
   display: grid;
   place-items: center;
   font-weight: bold;
+  color: #fff;
+  font-size: 1.2rem;
 `;
 
 const RankNumber = styled.div`
@@ -69,13 +73,17 @@ const RankNumber = styled.div`
 
 const TeamName = styled.div`
   position: absolute;
-  top: -40px;
+  top: -60px;
   font-weight: bold;
   text-align: center;
-  width: 200%;
+  width: 250%;
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
   font-family: var(--font-heading);
   color: var(--color-primary);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Table = styled(motion.div)`
@@ -116,18 +124,50 @@ const HeaderRow = styled(Row)`
   &:hover { background: rgba(0,0,0,0.2); }
 `;
 
+const LoadingContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+`;
+
 const Leaderboard = () => {
-  // Enhanced dummy data with "Lore"
-  const teams = [
-    { rank: 1, name: "Nexus Prime", score: 9850, school: "Cyberdyne Institute" },
-    { rank: 2, name: "Iron Legion", score: 9420, school: "Stark Academy" },
-    { rank: 3, name: "Volt Runners", score: 8900, school: "Tesla High" },
-    { rank: 4, name: "Binary Bandits", score: 8450, school: "Silicon Valley Prep" },
-    { rank: 5, name: "Mech-Mindset", score: 8100, school: "Boston Dynamics Future" },
-    { rank: 6, name: "Quantum Core", score: 7850, school: "MIT Junior League" },
-    { rank: 7, name: "Gear Grinders", score: 7600, school: "Detroit Mecha" },
-    { rank: 8, name: "Circuit Breakers", score: 7400, school: "Shenzhen Tech" }
-  ];
+  const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const data = await teamService.getAllTeams();
+        // Sort by score descending
+        const sorted = data.sort((a, b) => (b.score || 0) - (a.score || 0));
+
+        // Add rank
+        const ranked = sorted.map((team, index) => ({
+          ...team,
+          rank: index + 1
+        }));
+
+        setTeams(ranked);
+      } catch (error) {
+        console.error("Failed to fetch leaderboard", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeams();
+  }, []);
+
+  if (loading) return <LoadingContainer>Loading Ranking Data...</LoadingContainer>;
+
+  const top3 = teams.slice(0, 3);
+  const rest = teams.slice(3);
+
+  // Helper to get initials
+  const getInitials = (name) => name ? name.substring(0, 2).toUpperCase() : '??';
 
   return (
     <PageContainer>
@@ -135,77 +175,94 @@ const Leaderboard = () => {
         <h1 style={{ textAlign: 'center', marginBottom: '4rem' }}>Global Rankings</h1>
       </TextReveal>
 
-      <PodiumContainer>
-        {/* Rank 2 - Left */}
-        <PodiumStep
-          rank={2}
-          initial={{ height: 0 }}
-          animate={{ height: 250 }}
-          transition={{ delay: 0.2, type: "spring" }}
-        >
-          <Tilt className="podium-tilt" scale={1.1}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <TeamName style={{ fontSize: '1rem', position: 'relative', top: 0, marginBottom: '1rem' }}>Iron Legion</TeamName>
-              <Avatar>IL</Avatar>
-              <RankNumber>2</RankNumber>
-            </div>
-          </Tilt>
-        </PodiumStep>
+      {teams.length > 0 ? (
+        <>
+          <PodiumContainer>
+            {/* Rank 2 (Left) */}
+            {top3[1] && (
+              <PodiumStep
+                rank={2}
+                initial={{ height: 0 }}
+                animate={{ height: 250 }}
+                transition={{ delay: 0.2, type: "spring" }}
+              >
+                <Tilt className="podium-tilt" scale={1.1}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <TeamName style={{ marginBottom: '1rem' }}>{top3[1].teamName}</TeamName>
+                    <Avatar>{getInitials(top3[1].teamName)}</Avatar>
+                    <RankNumber>2</RankNumber>
+                    <div style={{ color: '#aaa', fontSize: '0.8rem', marginTop: '0.5rem' }}>{top3[1].score || 0} PTS</div>
+                  </div>
+                </Tilt>
+              </PodiumStep>
+            )}
 
-        {/* Rank 1 - Center, Tallest */}
-        <PodiumStep
-          rank={1}
-          style={{ zIndex: 2 }}
-          initial={{ height: 0 }}
-          animate={{ height: 350 }}
-          transition={{ delay: 0.4, type: "spring" }}
-        >
-          <Tilt className="podium-tilt" scale={1.1} glareEnable={true} glareMaxOpacity={0.8} glareColor="#ffd700" glarePosition="all">
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <TeamName style={{ fontSize: '1.4rem', color: 'var(--color-secondary)', position: 'relative', top: 0, marginBottom: '1rem' }}>Nexus Prime</TeamName>
-              <Avatar style={{ borderColor: 'var(--color-primary)' }}>NP</Avatar>
-              <RankNumber>1</RankNumber>
-            </div>
-          </Tilt>
-        </PodiumStep>
+            {/* Rank 1 (Center) */}
+            {top3[0] && (
+              <PodiumStep
+                rank={1}
+                style={{ zIndex: 2 }}
+                initial={{ height: 0 }}
+                animate={{ height: 350 }}
+                transition={{ delay: 0.4, type: "spring" }}
+              >
+                <Tilt className="podium-tilt" scale={1.1} glareEnable={true} glareMaxOpacity={0.8} glareColor="#ffd700" glarePosition="all">
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <TeamName style={{ fontSize: '1.2rem', color: 'var(--color-secondary)', marginBottom: '1rem' }}>{top3[0].teamName}</TeamName>
+                    <Avatar style={{ borderColor: 'var(--color-primary)', background: 'var(--color-primary)', color: '#000' }}>
+                      {getInitials(top3[0].teamName)}
+                    </Avatar>
+                    <RankNumber>1</RankNumber>
+                    <div style={{ color: '#fff', fontSize: '1rem', marginTop: '0.5rem', fontWeight: 'bold' }}>{top3[0].score || 0} PTS</div>
+                  </div>
+                </Tilt>
+              </PodiumStep>
+            )}
 
-        {/* Rank 3 - Right */}
-        <PodiumStep
-          rank={3}
-          initial={{ height: 0 }}
-          animate={{ height: 200 }}
-          transition={{ delay: 0.3, type: "spring" }}
-        >
-          <Tilt className="podium-tilt" scale={1.1}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <TeamName style={{ fontSize: '1rem', position: 'relative', top: 0, marginBottom: '1rem' }}>Volt Runners</TeamName>
-              <Avatar>VR</Avatar>
-              <RankNumber>3</RankNumber>
-            </div>
-          </Tilt>
-        </PodiumStep>
-      </PodiumContainer>
+            {/* Rank 3 (Right) */}
+            {top3[2] && (
+              <PodiumStep
+                rank={3}
+                initial={{ height: 0 }}
+                animate={{ height: 200 }}
+                transition={{ delay: 0.3, type: "spring" }}
+              >
+                <Tilt className="podium-tilt" scale={1.1}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <TeamName style={{ marginBottom: '1rem' }}>{top3[2].teamName}</TeamName>
+                    <Avatar>{getInitials(top3[2].teamName)}</Avatar>
+                    <RankNumber>3</RankNumber>
+                    <div style={{ color: '#aaa', fontSize: '0.8rem', marginTop: '0.5rem' }}>{top3[2].score || 0} PTS</div>
+                  </div>
+                </Tilt>
+              </PodiumStep>
+            )}
+          </PodiumContainer>
 
-      <Table
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-      >
-        <HeaderRow>
-          <div>Rank</div>
-          <div>Unit Identifier</div>
-          <div>Origin Sector</div>
-          <div>Performance Index</div>
-        </HeaderRow>
-        {teams.slice(3).map((team) => (
-          <Row key={team.rank}>
-            <div style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>#{team.rank}</div>
-            <div>{team.name}</div>
-            <div style={{ opacity: 0.7 }}>{team.school}</div>
-            <div style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>{team.score}</div>
-          </Row>
-        ))}
-      </Table>
+          <Table
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <HeaderRow>
+              <div>Rank</div>
+              <div>Unit Identifier</div>
+              <div>Origin Sector</div>
+              <div>Performance Index</div>
+            </HeaderRow>
+            {rest.map((team) => (
+              <Row key={team._id || team.rank}>
+                <div style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>#{team.rank}</div>
+                <div>{team.teamName}</div>
+                <div style={{ opacity: 0.7 }}>{team.institute}</div>
+                <div style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>{team.score || 0}</div>
+              </Row>
+            ))}
+          </Table>
+        </>
+      ) : (
+        <div style={{ textAlign: 'center', opacity: 0.6 }}>No data available yet via Subspace Relay.</div>
+      )}
     </PageContainer>
   );
 };

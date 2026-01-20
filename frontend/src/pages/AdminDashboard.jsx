@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import teamService from '../services/teamService';
 import { motion } from 'framer-motion';
 
 const PageContainer = styled.div`
@@ -93,13 +93,8 @@ const AdminDashboard = () => {
 
     const fetchTeams = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (!token) throw new Error("No token");
-
-            const res = await axios.get('http://localhost:5001/api/v1/teams', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setTeams(res.data);
+            const data = await teamService.getAllTeams();
+            setTeams(data);
         } catch (err) {
             console.error(err);
             setTeams(dummyTeams); // Fallback to dummy
@@ -110,15 +105,9 @@ const AdminDashboard = () => {
 
     const updateStatus = async (id, status) => {
         try {
-            const token = localStorage.getItem('token');
             // Optimistic update
             setTeams(teams.map(t => t._id === id ? { ...t, paymentStatus: status } : t));
-
-            if (token) {
-                await axios.put(`http://localhost:5001/api/v1/teams/${id}/status`, { status }, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-            }
+            await teamService.updateTeamStatus(id, status);
         } catch (err) {
             console.error(err);
             alert("Failed to update status");

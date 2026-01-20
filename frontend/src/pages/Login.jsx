@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -67,8 +68,10 @@ const Button = styled.button`
   }
 `;
 
+
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth(); // Use login from context
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -77,9 +80,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5001/api/v1/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
-      navigate('/register');
+      await login(formData.email, formData.password);
+      navigate('/dashboard'); // Navigate to dashboard after login
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     }

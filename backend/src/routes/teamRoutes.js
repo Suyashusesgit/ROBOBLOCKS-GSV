@@ -4,17 +4,23 @@ const {
     registerTeam,
     getMyTeam,
     getTeams,
-    updateTeamStatus
+    getPublicTeams,
+
+    updateTeamStatus,
+    updateTeamScore
 } = require('../controllers/teamController');
 const { protect, admin } = require('../middlewares/authMiddleware');
 const upload = require('../middlewares/uploadMiddleware');
 
 router.route('/')
-    .post(protect, upload.single('paymentProof'), registerTeam)
+    .post(upload.single('paymentProof'), registerTeam)
     .get(protect, admin, getTeams);
+
+router.get('/public', getPublicTeams);
 
 router.get('/me', protect, getMyTeam);
 
 router.put('/:id/status', protect, admin, updateTeamStatus);
+router.put('/:id/score', protect, admin, updateTeamScore);
 
 module.exports = router;

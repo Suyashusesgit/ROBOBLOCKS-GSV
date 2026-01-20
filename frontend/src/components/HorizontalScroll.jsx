@@ -37,11 +37,13 @@ const Panel = styled.div`
 
 const Year = styled.h2`
   font-size: 8rem;
-  color: rgba(255, 255, 255, 0.05); // Subtle background text
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
   position: absolute;
   top: 10%;
   left: 5%;
   font-family: var(--font-heading);
+  opacity: 0.8;
 `;
 
 const Content = styled.div`

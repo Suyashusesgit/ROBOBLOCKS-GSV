@@ -4,7 +4,7 @@ const teamSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: false
     },
     teamName: {
         type: String,
@@ -33,6 +33,10 @@ const teamSchema = new mongoose.Schema({
         type: String,
         enum: ['pending', 'verified', 'rejected'],
         default: 'pending'
+    },
+    score: {
+        type: Number,
+        default: 0
     },
     createdAt: {
         type: Date,

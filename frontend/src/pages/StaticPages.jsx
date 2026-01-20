@@ -47,40 +47,55 @@ const ListItem = styled(motion.li)`
   strong { color: var(--color-primary); }
 `;
 
-export const About = () => (
-    <PageContainer>
-        <TextReveal>
-            <Title>mission_briefing</Title>
-        </TextReveal>
-        <ContentWrapper
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-        >
-            <GlassCard>
-                <TextBlock>
-                    **RoboBlocks** is the premier national-level robotics event designed to test the limits of mechanical engineering and autonomous code.
-                </TextBlock>
-                <TextBlock>
-                    Set in the year 2140, teams must engineer units capable of navigating the "CyberGrid"—a hazardous digital-physical terrain. Only the most efficient algorithms and robust hardware will survive the gauntlet.
-                </TextBlock>
-                <TextBlock>
-                    Join us in the arena. Prove your logic.
-                </TextBlock>
-            </GlassCard>
-        </ContentWrapper>
-    </PageContainer>
-);
+export const About = () => {
+    const [data, setData] = React.useState({
+        mission: "Loading...",
+        story: "",
+        callToAction: ""
+    });
+
+    React.useEffect(() => {
+        const load = async () => {
+            try {
+                const content = await import('../services/teamService').then(m => m.default.getSiteContent());
+                if (content && content.about) setData(content.about);
+            } catch (e) { console.error(e); }
+        };
+        load();
+    }, []);
+
+    return (
+        <PageContainer>
+            <TextReveal>
+                <Title>mission_briefing</Title>
+            </TextReveal>
+            <ContentWrapper
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+            >
+                <GlassCard>
+                    <TextBlock>{data.mission}</TextBlock>
+                    <TextBlock>{data.story}</TextBlock>
+                    <TextBlock>{data.callToAction}</TextBlock>
+                </GlassCard>
+            </ContentWrapper>
+        </PageContainer>
+    );
+};
 
 export const Rules = () => {
-    const rules = [
-        "Squad Size: Max 4 Operators per unit.",
-        "Dimensions: Robot must fit within a 30x30x30cm bounding box.",
-        "Weight Limit: Wired units < 5kg, Autonomous units < 4kg.",
-        "Power: On-board DC sources only. No combustion engines.",
-        "Conduct: Sabotage of enemy signals (jamming) is strictly prohibited.",
-        "Safety: Emergency kill-switch must be accessible at all times."
-    ];
+    const [rules, setRules] = React.useState([]);
+
+    React.useEffect(() => {
+        const load = async () => {
+            try {
+                const content = await import('../services/teamService').then(m => m.default.getSiteContent());
+                if (content && content.rules) setRules(content.rules.map(r => r.text));
+            } catch (e) { console.error(e); }
+        };
+        load();
+    }, []);
 
     return (
         <PageContainer>

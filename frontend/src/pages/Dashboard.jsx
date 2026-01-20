@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+
 import { motion } from 'framer-motion';
 import GlassCard from '../components/GlassCard';
 import TextReveal from '../components/TextReveal';
+import teamService from '../services/teamService';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;
@@ -134,50 +135,15 @@ const Dashboard = () => {
     const [team, setTeam] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         const fetchTeam = async () => {
-            // ... existing mock/fetch logic ...
             try {
-                const token = localStorage.getItem('token');
-                // Mock for demo if no token
-                const mockTeam = {
-                    teamName: "CyberTitans",
-                    institute: "Galactic Institute of Technology",
-                    leaderPhone: "+91 98765 43210",
-                    paymentStatus: "verified",
-                    members: [
-                        { name: "John Doe", email: "john@galaxy.edu", role: "Captain" },
-                        { name: "Jane Smith", email: "jane@galaxy.edu", role: "Pilot" },
-                        { name: "Robert Fox", email: "robert@galaxy.edu", role: "Engineer" },
-                        { name: "Alice Cooper", email: "alice@galaxy.edu", role: "Strategist" }
-                    ]
-                };
-
-                if (!token) {
-                    setTeam(mockTeam);
-                    setLoading(false);
-                    return;
-                }
-
-                const res = await axios.get('http://localhost:5001/api/v1/dashboard', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setTeam(res.data);
+                const data = await teamService.getMyTeam();
+                setTeam(data);
             } catch (err) {
-                // Fallback
-                const mockTeam = {
-                    teamName: "CyberTitans",
-                    institute: "Galactic Institute of Technology",
-                    leaderPhone: "+91 98765 43210",
-                    paymentStatus: "verified",
-                    members: [
-                        { name: "John Doe", email: "john@galaxy.edu", role: "Captain" },
-                        { name: "Jane Smith", email: "jane@galaxy.edu", role: "Pilot" },
-                        { name: "Robert Fox", email: "robert@galaxy.edu", role: "Engineer" },
-                        { name: "Alice Cooper", email: "alice@galaxy.edu", role: "Strategist" }
-                    ]
-                };
-                setTeam(mockTeam);
+                console.error("Failed to fetch team", err);
+                setTeam(null);
             } finally {
                 setLoading(false);
             }

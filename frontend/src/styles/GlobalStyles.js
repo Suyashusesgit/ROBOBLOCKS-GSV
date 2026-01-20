@@ -15,7 +15,8 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: var(--color-bg);
+    background: radial-gradient(circle at 50% 0%, #151520 0%, #050507 100%);
+    background-attachment: fixed;
     color: var(--color-text);
     font-family: var(--font-main);
     overflow-x: hidden;

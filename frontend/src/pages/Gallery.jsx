@@ -88,14 +88,22 @@ const ParallaxImage = ({ src, index }) => {
 };
 
 const Gallery = () => {
-  // High-res placeholder visuals (Cyberpunk/Robotics themes)
-  const images = [
-    "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80",
-    "https://images.unsplash.com/photo-1535378437323-9555f3e7f667?w=800&q=80",
-    "https://images.unsplash.com/photo-1518674660708-312141344184?w=800&q=80",
-    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80",
-    "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80"
-  ];
+  const [images, setImages] = React.useState([]);
+
+  React.useEffect(() => {
+    const loadContent = async () => {
+      try {
+        const content = await import('../services/teamService').then(m => m.default.getSiteContent());
+        if (content && content.gallery) {
+          // Extract URLs from gallery objects
+          setImages(content.gallery.map(g => g.url));
+        }
+      } catch (err) {
+        console.error("Failed to load Gallery", err);
+      }
+    };
+    loadContent();
+  }, []);
 
   return (
     <PageContainer>

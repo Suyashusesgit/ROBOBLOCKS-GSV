@@ -15,12 +15,11 @@ const SwitcherContainer = styled(motion.div)`
 `;
 
 const ToggleButton = styled.button`
-  background: var(--color-glass);
+  background: #111;
   border: 1px solid var(--color-border);
   color: var(--color-primary);
   padding: 0.8rem;
   border-radius: 50%;
-  backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   transition: all 0.3s ease;
 
@@ -32,11 +31,10 @@ const ToggleButton = styled.button`
 `;
 
 const ThemeList = styled(motion.div)`
-  background: var(--color-glass);
+  background: #111;
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 0.5rem;
-  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

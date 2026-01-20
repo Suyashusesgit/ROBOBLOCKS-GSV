@@ -17,8 +17,7 @@ const Nav = styled(motion.nav)`
   transition: padding 0.3s ease;
   
   &.scrolled {
-    background: rgba(5, 5, 5, 0.8);
-    backdrop-filter: blur(10px);
+    background: #000;
     padding: 1rem 2rem;
     border-bottom: 1px solid var(--color-border);
   }

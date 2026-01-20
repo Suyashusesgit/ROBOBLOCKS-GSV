@@ -36,16 +36,17 @@ const ImagePlaceholder = styled.div`
   border-radius: 50%;
   background: linear-gradient(135deg, #222, #333);
   margin: 0 auto 1.5rem;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-primary);
   overflow: hidden;
   position: relative;
+
   
   &::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: none;
   }
 `;
 
@@ -69,33 +70,33 @@ const Contact = styled.p`
 `;
 
 const Organizers = () => {
-    const team = [
-        { name: "Alex Chen", role: "Event Lead", contact: "alex@roboblocks.com" },
-        { name: "Sarah Jones", role: "Technical Head", contact: "sarah@roboblocks.com" },
-        { name: "Mike Ross", role: "Operations", contact: "mike@roboblocks.com" }
-    ];
+  const team = [
+    { name: "Alex Chen", role: "Event Lead", contact: "alex@roboblocks.com" },
+    { name: "Sarah Jones", role: "Technical Head", contact: "sarah@roboblocks.com" },
+    { name: "Mike Ross", role: "Operations", contact: "mike@roboblocks.com" }
+  ];
 
-    return (
-        <Section>
-            <Title>Organizing Team</Title>
-            <OrganizersGrid>
-                {team.map((member, index) => (
-                    <OrganizerCard
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.2 }}
-                    >
-                        <ImagePlaceholder />
-                        <Name>{member.name}</Name>
-                        <Role>{member.role}</Role>
-                        <Contact>{member.contact}</Contact>
-                    </OrganizerCard>
-                ))}
-            </OrganizersGrid>
-        </Section>
-    );
+  return (
+    <Section>
+      <Title>Organizing Team</Title>
+      <OrganizersGrid>
+        {team.map((member, index) => (
+          <OrganizerCard
+            key={index}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.2 }}
+          >
+            <ImagePlaceholder />
+            <Name>{member.name}</Name>
+            <Role>{member.role}</Role>
+            <Contact>{member.contact}</Contact>
+          </OrganizerCard>
+        ))}
+      </OrganizersGrid>
+    </Section>
+  );
 };
 
 export default Organizers;

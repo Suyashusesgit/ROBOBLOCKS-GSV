@@ -38,7 +38,8 @@ const ImageWrapper = styled(motion.div)`
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  background: #000;
   border: 1px solid var(--color-border);
   
   img {

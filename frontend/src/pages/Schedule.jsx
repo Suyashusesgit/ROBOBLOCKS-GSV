@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import TextReveal from '../components/TextReveal';
+import Tilt from 'react-parallax-tilt';
 
 const PageContainer = styled.div`
   min-height: 200vh;
@@ -35,11 +36,10 @@ const SVGLineContainer = styled.div`
 const EventCard = styled(motion.div)`
   margin-left: 60px;
   position: relative;
-  background: var(--color-glass);
+  background: #111;
   border: 1px solid var(--color-border);
   padding: 2rem;
   border-radius: 12px;
-  backdrop-filter: blur(10px);
   overflow: hidden;
 
   /* Theme-specific accent */
@@ -90,6 +90,7 @@ const Desc = styled.p`
 `;
 
 const Schedule = () => {
+
   // Rich Sci-Fi Lore Data
   const events = [
     { time: "08:00", title: "System Initialization", desc: "All units power on. Network handshake protocols initiated across the arena." },
@@ -142,14 +143,25 @@ const Schedule = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
           >
-            <Dot
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ delay: i * 0.1 + 0.2 }}
-            />
-            <Time>{ev.time}</Time>
-            <Title>{ev.title}</Title>
-            <Desc>{ev.desc}</Desc>
+            <Tilt
+              tiltMaxAngleX={10}
+              tiltMaxAngleY={10}
+              perspective={1000}
+              scale={1.05}
+              transitionSpeed={1500}
+              className="tilt-card"
+            >
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <Dot
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ delay: i * 0.1 + 0.2 }}
+                />
+                <Time>{ev.time}</Time>
+                <Title>{ev.title}</Title>
+                <Desc>{ev.desc}</Desc>
+              </div>
+            </Tilt>
           </EventCard>
         ))}
       </TimelineWrapper>

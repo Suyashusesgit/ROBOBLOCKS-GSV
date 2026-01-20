@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import SmoothScroll from '../animations/SmoothScroll';
-import ParticleBackground from './ParticleBackground';
+import Scene3D from './Scene3D';
+import PageTransition from './PageTransition';
 
 const Main = styled.main`
   position: relative;
@@ -14,13 +16,19 @@ const Main = styled.main`
 `;
 
 const Layout = () => {
+    const location = useLocation();
+
     return (
         <>
             <Navbar />
+            <Scene3D />
             <SmoothScroll>
-                <ParticleBackground />
                 <Main>
-                    <Outlet />
+                    <AnimatePresence mode="wait">
+                        <PageTransition key={location.pathname}>
+                            <Outlet />
+                        </PageTransition>
+                    </AnimatePresence>
                 </Main>
                 <Footer />
             </SmoothScroll>

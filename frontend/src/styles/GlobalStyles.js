@@ -21,6 +21,7 @@ export const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: none;
     
     /* Fix layout shift */
     display: flex;
@@ -49,10 +50,11 @@ export const GlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
     color: inherit;
+    cursor: none;
   }
 
   button {
-    cursor: pointer;
+    cursor: none;
     border: none;
     outline: none;
     font-family: inherit;

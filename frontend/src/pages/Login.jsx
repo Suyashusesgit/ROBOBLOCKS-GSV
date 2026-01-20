@@ -13,8 +13,7 @@ const PageContainer = styled.div`
 `;
 
 const FormContainer = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  background: #111;
   padding: 3rem;
   border-radius: 20px;
   border: 1px solid var(--color-border);
@@ -69,49 +68,49 @@ const Button = styled.button`
 `;
 
 const Login = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
 
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const res = await axios.post('http://localhost:5000/api/v1/auth/login', formData);
-            localStorage.setItem('token', res.data.token);
-            navigate('/register');
-        } catch (err) {
-            setError(err.response?.data?.message || 'Login failed');
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('http://localhost:5001/api/v1/auth/login', formData);
+      localStorage.setItem('token', res.data.token);
+      navigate('/register');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+    }
+  };
 
-    return (
-        <PageContainer>
-            <FormContainer
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-            >
-                <Title>Login</Title>
-                {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <FormGroup>
-                        <Label>Email</Label>
-                        <Input name="email" type="email" onChange={handleChange} required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Password</Label>
-                        <Input name="password" type="password" onChange={handleChange} required />
-                    </FormGroup>
-                    <Button type="submit">Login</Button>
-                </form>
-                <p style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.9rem', color: '#888' }}>
-                    Don't have an account? <Link to="/signup" style={{ color: 'var(--color-primary)' }}>Sign Up</Link>
-                </p>
-            </FormContainer>
-        </PageContainer>
-    );
+  return (
+    <PageContainer>
+      <FormContainer
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Title>Login</Title>
+        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label>Email</Label>
+            <Input name="email" type="email" onChange={handleChange} required />
+          </FormGroup>
+          <FormGroup>
+            <Label>Password</Label>
+            <Input name="password" type="password" onChange={handleChange} required />
+          </FormGroup>
+          <Button type="submit">Login</Button>
+        </form>
+        <p style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.9rem', color: '#888' }}>
+          Don't have an account? <Link to="/signup" style={{ color: 'var(--color-primary)' }}>Sign Up</Link>
+        </p>
+      </FormContainer>
+    </PageContainer>
+  );
 };
 
 export default Login;

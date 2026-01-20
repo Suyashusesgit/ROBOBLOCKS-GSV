@@ -13,15 +13,14 @@ const PageContainer = styled.div`
 `;
 
 const FormContainer = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  background: #111;
   padding: 3rem;
   border-radius: 20px;
   border: 1px solid var(--color-border);
   width: 100%;
   max-width: 600px;
-  
-  @media (max-width: 768px) {
+
+  @media(max-width: 768px) {
     padding: 2rem;
   }
 `;
@@ -60,7 +59,7 @@ const Input = styled.input`
 `;
 
 const FileInput = styled.input`
-  color: #fff;
+color: #fff;
 `;
 
 const MemberGroup = styled.div`
@@ -174,10 +173,10 @@ const Register = () => {
             data.append('members', JSON.stringify(formData.members));
             data.append('paymentProof', file);
 
-            await axios.post('http://localhost:5000/api/v1/teams', data, {
+            await axios.post('http://localhost:5001/api/v1/teams', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token} `
                 }
             });
 

@@ -16,7 +16,7 @@ const Title = styled.h1`
 `;
 
 const TableContainer = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.02);
+  background: #111;
   border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
@@ -32,7 +32,7 @@ const Table = styled.table`
 const Th = styled.th`
   text-align: left;
   padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: #222;
   color: #aaa;
   font-weight: 600;
   text-transform: uppercase;
@@ -96,7 +96,7 @@ const AdminDashboard = () => {
             const token = localStorage.getItem('token');
             if (!token) throw new Error("No token");
 
-            const res = await axios.get('http://localhost:5000/api/v1/teams', {
+            const res = await axios.get('http://localhost:5001/api/v1/teams', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setTeams(res.data);
@@ -115,7 +115,7 @@ const AdminDashboard = () => {
             setTeams(teams.map(t => t._id === id ? { ...t, paymentStatus: status } : t));
 
             if (token) {
-                await axios.put(`http://localhost:5000/api/v1/teams/${id}/status`, { status }, {
+                await axios.put(`http://localhost:5001/api/v1/teams/${id}/status`, { status }, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             }

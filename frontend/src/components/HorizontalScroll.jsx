@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import TextReveal from './TextReveal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,54 +63,58 @@ const Desc = styled.p`
 `;
 
 const events = [
-    { year: "PHASE 1", title: "Registration", desc: "Teams register and submit their initial robot concepts for review. Access to documentation and grid specs." },
-    { year: "PHASE 2", title: "Idea Submission", desc: "Detailed CAD designs and strategy documents are submitted. Top 50 teams qualify for the technical interview." },
-    { year: "PHASE 3", title: "Grand Finale", desc: "The final showdown. 48 hours of non-stop robotics action in the RoboBlocks Arena." },
+  { year: "PHASE 1", title: "Registration", desc: "Teams register and submit their initial robot concepts for review. Access to documentation and grid specs." },
+  { year: "PHASE 2", title: "Idea Submission", desc: "Detailed CAD designs and strategy documents are submitted. Top 50 teams qualify for the technical interview." },
+  { year: "PHASE 3", title: "Grand Finale", desc: "The final showdown. 48 hours of non-stop robotics action in the RoboBlocks Arena." },
 ];
 
 const HorizontalScroll = () => {
-    const sectionRef = useRef(null);
-    const triggerRef = useRef(null);
+  const sectionRef = useRef(null);
+  const triggerRef = useRef(null);
 
-    useEffect(() => {
-        const pin = gsap.fromTo(
-            sectionRef.current,
-            {
-                translateX: 0,
-            },
-            {
-                translateX: "-200vw", // Move by 2 screen widths (total 3 panels)
-                ease: "none",
-                duration: 1,
-                scrollTrigger: {
-                    trigger: triggerRef.current,
-                    start: "top top",
-                    end: "+=2000", // Scroll distance
-                    scrub: 0.6,
-                    pin: true,
-                },
-            }
-        );
-        return () => {
-            pin.kill();
-        };
-    }, []);
-
-    return (
-        <SectionWrapper ref={triggerRef}>
-            <Container ref={sectionRef}>
-                {events.map((event, index) => (
-                    <Panel key={index}>
-                        <Year>{event.year}</Year>
-                        <Content>
-                            <Title>{event.title}</Title>
-                            <Desc>{event.desc}</Desc>
-                        </Content>
-                    </Panel>
-                ))}
-            </Container>
-        </SectionWrapper>
+  useEffect(() => {
+    const pin = gsap.fromTo(
+      sectionRef.current,
+      {
+        translateX: 0,
+      },
+      {
+        translateX: "-200vw", // Move by 2 screen widths (total 3 panels)
+        ease: "none",
+        duration: 1,
+        scrollTrigger: {
+          trigger: triggerRef.current,
+          start: "top top",
+          end: "+=2000", // Scroll distance
+          scrub: 0.6,
+          pin: true,
+        },
+      }
     );
+    return () => {
+      pin.kill();
+    };
+  }, []);
+
+  return (
+    <SectionWrapper ref={triggerRef}>
+      <Container ref={sectionRef}>
+        {events.map((event, index) => (
+          <Panel key={index}>
+            <Year>{event.year}</Year>
+            <Content>
+              <TextReveal>
+                <Title>{event.title}</Title>
+              </TextReveal>
+              <TextReveal delay={0.2}>
+                <Desc>{event.desc}</Desc>
+              </TextReveal>
+            </Content>
+          </Panel>
+        ))}
+      </Container>
+    </SectionWrapper>
+  );
 };
 
 export default HorizontalScroll;

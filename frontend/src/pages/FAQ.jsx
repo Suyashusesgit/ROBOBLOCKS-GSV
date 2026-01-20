@@ -19,7 +19,7 @@ const FAQGrid = styled.div`
 
 const FAQItem = styled(motion.div)`
   border: 1px solid var(--color-border);
-  background: var(--color-glass);
+  background: #111;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -61,7 +61,7 @@ const Question = styled.button`
   transition: all 0.3s;
 
   &:hover {
-    background: rgba(255,255,255,0.02);
+    background: #1a1a1a;
     padding-left: 2.5rem; /* Slide effect */
   }
 
@@ -83,56 +83,56 @@ const Answer = styled(motion.div)`
 `;
 
 const FAQ = () => {
-    const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
 
-    const questions = [
-        { q: "INIT_PARAMETER: PARTICIPATION_CRITERIA", a: "Target demographic: Students aged 14-22. Status: High School or Undergraduate. Verification required." },
-        { q: "UNIT_CONFIGURATION: SQUAD_SIZE", a: "Squad limits: Min 3 / Max 5 units per team. Cross-institutional protocols are enabled and encouraged." },
-        { q: "RESOURCE_ALLOCATION: ENTRY_FEE", a: "Processing fee: $50 credits per team. Includes standard hardware kit and mainframe access credentials." },
-        { q: "HARDWARE_SPECS: BYOD_POLICY", a: "Basic toolsets provided on-site. Custom hardware modules and processing units (Laptops) must be provisioned by the team." },
-        { q: "LOGISTICS: ACCOMMODATION", a: "Dormitory access provided for out-of-sector teams. Request via portal utilizing Form-7B." }
-    ];
+  const questions = [
+    { q: "INIT_PARAMETER: PARTICIPATION_CRITERIA", a: "Target demographic: Students aged 14-22. Status: High School or Undergraduate. Verification required." },
+    { q: "UNIT_CONFIGURATION: SQUAD_SIZE", a: "Squad limits: Min 3 / Max 5 units per team. Cross-institutional protocols are enabled and encouraged." },
+    { q: "RESOURCE_ALLOCATION: ENTRY_FEE", a: "Processing fee: $50 credits per team. Includes standard hardware kit and mainframe access credentials." },
+    { q: "HARDWARE_SPECS: BYOD_POLICY", a: "Basic toolsets provided on-site. Custom hardware modules and processing units (Laptops) must be provisioned by the team." },
+    { q: "LOGISTICS: ACCOMMODATION", a: "Dormitory access provided for out-of-sector teams. Request via portal utilizing Form-7B." }
+  ];
 
-    return (
-        <PageContainer>
-            <TextReveal>
-                <h1>Knowledge Base</h1>
-            </TextReveal>
+  return (
+    <PageContainer>
+      <TextReveal>
+        <h1>Knowledge Base</h1>
+      </TextReveal>
 
-            <FAQGrid>
-                {questions.map((item, idx) => (
-                    <FAQItem
-                        key={idx}
-                        data-active={activeIndex === idx}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                    >
-                        <Question onClick={() => setActiveIndex(activeIndex === idx ? null : idx)}>
-                            {item.q}
-                            <motion.span
-                                animate={{ rotate: activeIndex === idx ? 45 : 0 }}
-                            >
-                                +
-                            </motion.span>
-                        </Question>
-                        <AnimatePresence>
-                            {activeIndex === idx && (
-                                <Answer
-                                    data-active={true}
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                >
-                                    {item.a}
-                                </Answer>
-                            )}
-                        </AnimatePresence>
-                    </FAQItem>
-                ))}
-            </FAQGrid>
-        </PageContainer>
-    );
+      <FAQGrid>
+        {questions.map((item, idx) => (
+          <FAQItem
+            key={idx}
+            data-active={activeIndex === idx}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.1 }}
+          >
+            <Question onClick={() => setActiveIndex(activeIndex === idx ? null : idx)}>
+              {item.q}
+              <motion.span
+                animate={{ rotate: activeIndex === idx ? 45 : 0 }}
+              >
+                +
+              </motion.span>
+            </Question>
+            <AnimatePresence>
+              {activeIndex === idx && (
+                <Answer
+                  data-active={true}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                >
+                  {item.a}
+                </Answer>
+              )}
+            </AnimatePresence>
+          </FAQItem>
+        ))}
+      </FAQGrid>
+    </PageContainer>
+  );
 };
 
 export default FAQ;

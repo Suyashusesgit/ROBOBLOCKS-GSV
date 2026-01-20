@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import TextReveal from '../components/TextReveal';
+import Tilt from 'react-parallax-tilt';
 
 const PageContainer = styled.div`
   padding: 8rem 2rem;
@@ -26,7 +27,7 @@ const PodiumContainer = styled.div`
 
 const PodiumStep = styled(motion.div)`
   width: 120px;
-  background: var(--color-glass);
+  background: #111;
   border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -78,11 +79,10 @@ const TeamName = styled.div`
 `;
 
 const Table = styled(motion.div)`
-  background: var(--color-glass);
+  background: #111;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(20px);
 `;
 
 const Row = styled.div`
@@ -143,9 +143,13 @@ const Leaderboard = () => {
           animate={{ height: 250 }}
           transition={{ delay: 0.2, type: "spring" }}
         >
-          <TeamName style={{ fontSize: '1rem' }}>Iron Legion</TeamName>
-          <Avatar>IL</Avatar>
-          <RankNumber>2</RankNumber>
+          <Tilt className="podium-tilt" scale={1.1}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <TeamName style={{ fontSize: '1rem', position: 'relative', top: 0, marginBottom: '1rem' }}>Iron Legion</TeamName>
+              <Avatar>IL</Avatar>
+              <RankNumber>2</RankNumber>
+            </div>
+          </Tilt>
         </PodiumStep>
 
         {/* Rank 1 - Center, Tallest */}
@@ -156,9 +160,13 @@ const Leaderboard = () => {
           animate={{ height: 350 }}
           transition={{ delay: 0.4, type: "spring" }}
         >
-          <TeamName style={{ fontSize: '1.4rem', color: 'var(--color-secondary)' }}>Nexus Prime</TeamName>
-          <Avatar style={{ borderColor: 'var(--color-primary)' }}>NP</Avatar>
-          <RankNumber>1</RankNumber>
+          <Tilt className="podium-tilt" scale={1.1} glareEnable={true} glareMaxOpacity={0.8} glareColor="#ffd700" glarePosition="all">
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <TeamName style={{ fontSize: '1.4rem', color: 'var(--color-secondary)', position: 'relative', top: 0, marginBottom: '1rem' }}>Nexus Prime</TeamName>
+              <Avatar style={{ borderColor: 'var(--color-primary)' }}>NP</Avatar>
+              <RankNumber>1</RankNumber>
+            </div>
+          </Tilt>
         </PodiumStep>
 
         {/* Rank 3 - Right */}
@@ -168,9 +176,13 @@ const Leaderboard = () => {
           animate={{ height: 200 }}
           transition={{ delay: 0.3, type: "spring" }}
         >
-          <TeamName style={{ fontSize: '1rem' }}>Volt Runners</TeamName>
-          <Avatar>VR</Avatar>
-          <RankNumber>3</RankNumber>
+          <Tilt className="podium-tilt" scale={1.1}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <TeamName style={{ fontSize: '1rem', position: 'relative', top: 0, marginBottom: '1rem' }}>Volt Runners</TeamName>
+              <Avatar>VR</Avatar>
+              <RankNumber>3</RankNumber>
+            </div>
+          </Tilt>
         </PodiumStep>
       </PodiumContainer>
 

@@ -13,14 +13,12 @@ const Section = styled.section`
 `;
 
 import Sponsors from '../components/Sponsors';
-import ParticleBackground from '../components/ParticleBackground';
 import Organizers from '../components/Organizers';
 import HorizontalScroll from '../components/HorizontalScroll';
 
 const Home = () => {
     return (
         <>
-            <ParticleBackground />
             <Hero />
             <HorizontalScroll />
             <Sponsors />

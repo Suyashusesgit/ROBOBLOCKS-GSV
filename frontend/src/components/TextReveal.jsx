@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   overflow: hidden;
-  display: inline-block;
+  display: block;
 `;
 
 const TextReveal = ({ children, delay = 0, className }) => {
@@ -13,7 +13,7 @@ const TextReveal = ({ children, delay = 0, className }) => {
     // Let's do a simple vertical slide-up reveal which is very "cinematic".
 
     const variants = {
-        hidden: { y: "110%", opacity: 0, rotate: 5 },
+        hidden: { y: "100%", opacity: 0, rotate: 3 },
         visible: {
             y: 0,
             opacity: 1,
@@ -30,8 +30,7 @@ const TextReveal = ({ children, delay = 0, className }) => {
         <Wrapper className={className}>
             <motion.div
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                animate="visible"
                 variants={variants}
             >
                 {children}

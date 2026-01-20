@@ -41,20 +41,20 @@ const StyledTiltCard = styled(TiltCard)`
 `;
 
 const SponsorCardContent = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--color-border);
+  background: #111;
+  border: 1px solid #333;
   border-radius: 12px;
   padding: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  backdrop-filter: blur(5px);
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
 
   &:hover {
     border-color: var(--color-primary);
-    background: rgba(255, 255, 255, 0.08);
+    background: #1a1a1a;
+    transform: translateY(-5px);
   }
 `;
 

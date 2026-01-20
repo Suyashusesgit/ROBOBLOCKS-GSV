@@ -64,13 +64,19 @@ const EventCard = styled.div`
   position: relative;
   width: 45%;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--color-border);
-  backdrop-filter: blur(5px);
+  background: #111;
+  border: 1px solid #333;
   border-radius: 12px;
   align-self: ${props => props.left ? 'flex-start' : 'flex-end'};
   z-index: 2;
   opacity: 0; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(0, 240, 255, 0.3);
+    border-color: var(--color-primary);
+  } 
   /* Initial state handled by GSAP */
 
   &::before {
@@ -133,76 +139,76 @@ const EventDesc = styled.p`
 `;
 
 const events = [
-    { date: "Oct 15, 2024", title: "Registrations Open", desc: "Teams can start registering on the portal. Early bird perks available." },
-    { date: "Nov 01, 2024", title: "Problem Statement Release", desc: "Detailed rulebook and grid specifications will be released." },
-    { date: "Nov 20, 2024", title: "Round 1: Idea Submission", desc: "Submit your robot design and strategy documentation." },
-    { date: "Dec 05, 2024", title: "Finalists Announced", desc: "Top 30 teams selected for the on-site Grand Finale." },
-    { date: "Dec 15, 2024", title: "Grand Finale", desc: "The ultimate showdown at the RoboBlocks Arena." }
+  { date: "Oct 15, 2024", title: "Registrations Open", desc: "Teams can start registering on the portal. Early bird perks available." },
+  { date: "Nov 01, 2024", title: "Problem Statement Release", desc: "Detailed rulebook and grid specifications will be released." },
+  { date: "Nov 20, 2024", title: "Round 1: Idea Submission", desc: "Submit your robot design and strategy documentation." },
+  { date: "Dec 05, 2024", title: "Finalists Announced", desc: "Top 30 teams selected for the on-site Grand Finale." },
+  { date: "Dec 15, 2024", title: "Grand Finale", desc: "The ultimate showdown at the RoboBlocks Arena." }
 ];
 
 const Timeline = () => {
-    const containerRef = useRef(null);
-    const lineRef = useRef(null);
-    const cardRefs = useRef([]);
+  const containerRef = useRef(null);
+  const lineRef = useRef(null);
+  const cardRefs = useRef([]);
 
-    useEffect(() => {
-        const section = containerRef.current;
+  useEffect(() => {
+    const section = containerRef.current;
 
-        // Animate the central line
-        gsap.to(lineRef.current, {
-            height: '100%',
-            ease: 'none',
-            scrollTrigger: {
-                trigger: section,
-                start: 'top center',
-                end: 'bottom center',
-                scrub: 1,
-            }
-        });
+    // Animate the central line
+    gsap.to(lineRef.current, {
+      height: '100%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top center',
+        end: 'bottom center',
+        scrub: 1,
+      }
+    });
 
-        // Animate each card
-        cardRefs.current.forEach((card, index) => {
-            gsap.fromTo(card,
-                { opacity: 0, y: 50, x: index % 2 === 0 ? -50 : 50 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    x: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 80%', // When top of card hits 80% of viewport
-                        toggleActions: 'play none none reverse'
-                    }
-                }
-            );
-        });
+    // Animate each card
+    cardRefs.current.forEach((card, index) => {
+      gsap.fromTo(card,
+        { opacity: 0, y: 50, x: index % 2 === 0 ? -50 : 50 },
+        {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%', // When top of card hits 80% of viewport
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+    });
 
-    }, []);
+  }, []);
 
-    return (
-        <TimelineSection>
-            <SectionTitle>Event Timeline</SectionTitle>
-            <TimelineContainer ref={containerRef}>
-                <LineContainer>
-                    <ActiveLine ref={lineRef} />
-                </LineContainer>
+  return (
+    <TimelineSection>
+      <SectionTitle>Event Timeline</SectionTitle>
+      <TimelineContainer ref={containerRef}>
+        <LineContainer>
+          <ActiveLine ref={lineRef} />
+        </LineContainer>
 
-                {events.map((event, index) => (
-                    <EventCard
-                        key={index}
-                        left={index % 2 === 0}
-                        ref={el => cardRefs.current[index] = el}
-                    >
-                        <DateText>{event.date}</DateText>
-                        <EventTitle>{event.title}</EventTitle>
-                        <EventDesc>{event.desc}</EventDesc>
-                    </EventCard>
-                ))}
-            </TimelineContainer>
-        </TimelineSection>
-    );
+        {events.map((event, index) => (
+          <EventCard
+            key={index}
+            left={index % 2 === 0}
+            ref={el => cardRefs.current[index] = el}
+          >
+            <DateText>{event.date}</DateText>
+            <EventTitle>{event.title}</EventTitle>
+            <EventDesc>{event.desc}</EventDesc>
+          </EventCard>
+        ))}
+      </TimelineContainer>
+    </TimelineSection>
+  );
 };
 
 export default Timeline;

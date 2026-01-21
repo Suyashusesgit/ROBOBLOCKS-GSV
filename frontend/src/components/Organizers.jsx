@@ -71,9 +71,12 @@ const Contact = styled.p`
 
 const Organizers = ({ data }) => {
   const team = data || [
-    { name: "Alex Chen", role: "Event Lead", contact: "alex@roboblocks.com" },
-    { name: "Sarah Jones", role: "Technical Head", contact: "sarah@roboblocks.com" },
-    { name: "Mike Ross", role: "Operations", contact: "mike@roboblocks.com" }
+    { name: "Aman Choudhary", role: "Event Head", contact: "aman@roboblocks.com" },
+    { name: "Pranjal Chaturvedi", role: "Event Head", contact: "pranjal@roboblocks.com" },
+    { name: "Ayush Aditya", role: "Event Coordinator", contact: "ayush@roboblocks.com" },
+    { name: "Arunodya Sharma", role: "Event Coordinator", contact: "arunodya@roboblocks.com" },
+    { name: "Shashank Savarkar", role: "Event Technical Head", contact: "shashank@roboblocks.com" },
+    { name: "Suyash Srivastav", role: "Event Technical Head", contact: "suyash@roboblocks.com" }
   ];
 
   return (

@@ -139,11 +139,10 @@ const EventDesc = styled.p`
 `;
 
 const events = [
-  { date: "Oct 15, 2024", title: "Registrations Open", desc: "Teams can start registering on the portal. Early bird perks available." },
-  { date: "Nov 01, 2024", title: "Problem Statement Release", desc: "Detailed rulebook and grid specifications will be released." },
-  { date: "Nov 20, 2024", title: "Round 1: Idea Submission", desc: "Submit your robot design and strategy documentation." },
-  { date: "Dec 05, 2024", title: "Finalists Announced", desc: "Top 30 teams selected for the on-site Grand Finale." },
-  { date: "Dec 15, 2024", title: "Grand Finale", desc: "The ultimate showdown at the RoboBlocks Arena." }
+  { date: "Phase 1", title: "Registration", desc: "Teams can start registering on the portal." },
+  { date: "Phase 2", title: "Idea, Workflow & Algorithm", desc: "Submission of robot design, workflow and algorithm documentation." },
+  { date: "Phase 3", title: "ROS Simulation", desc: "Simulate your bot in the provided ROS environment." },
+  { date: "Phase 4", title: "Offline Round", desc: "Grand Finale with working bots at the arena." }
 ];
 
 const Timeline = () => {

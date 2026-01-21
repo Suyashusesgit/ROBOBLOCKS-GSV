@@ -73,7 +73,6 @@ const Sponsors = ({ data }) => {
     { name: "INNOVATE 1", tier: "Gold" },
     { name: "INNOVATE 2", tier: "Gold" },
     { name: "INNOVATE 3", tier: "Gold" },
-    { name: "STARTUP 1", tier: "Silver" },
   ];
 
   const renderTier = (tierName) => {
@@ -98,11 +97,6 @@ const Sponsors = ({ data }) => {
       <TierTitle>Gold Sponsors</TierTitle>
       <SponsorsGrid>
         {renderTier("Gold")}
-      </SponsorsGrid>
-
-      <TierTitle>Silver Sponsors</TierTitle>
-      <SponsorsGrid>
-        {renderTier("Silver")}
       </SponsorsGrid>
     </Section>
   );

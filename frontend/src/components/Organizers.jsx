@@ -71,12 +71,12 @@ const Contact = styled.p`
 
 const Organizers = ({ data }) => {
   const team = data || [
-    { name: "Aman Choudhary", role: "Event Head", contact: "aman@roboblocks.com" },
-    { name: "Pranjal Chaturvedi", role: "Event Head", contact: "pranjal@roboblocks.com" },
-    { name: "Ayush Aditya", role: "Event Coordinator", contact: "ayush@roboblocks.com" },
-    { name: "Arunodya Sharma", role: "Event Coordinator", contact: "arunodya@roboblocks.com" },
-    { name: "Shashank Savarkar", role: "Event Technical Head", contact: "shashank@roboblocks.com" },
-    { name: "Suyash Srivastav", role: "Event Technical Head", contact: "suyash@roboblocks.com" }
+    { name: "Aman Choudhary", role: "Event Head", contact: "aman.choudhary_btech23@gsv.ac.in" },
+    { name: "Pranjal Chaturvedi", role: "Event Head", contact: "pranjal.chaturvedi_btech24@gsv.ac.in" },
+    { name: "Ayush Aditya", role: "Event Coordinator", contact: "ayush.aditya_btech24@gsv.ac.in" },
+    { name: "Arunodya Sharma", role: "Event Coordinator", contact: "arunodya.sharma_btech24@gsv.ac.in" },
+    { name: "Shashank Savarkar", role: "Event Technical Head", contact: "shashank.savarkar_btech24@gsv.ac.in" },
+    { name: "Suyash Srivastav", role: "Event Technical Head", contact: "suyash.srivastav_btech24@gsv.ac.in" }
   ];
 
   return (

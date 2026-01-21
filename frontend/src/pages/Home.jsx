@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Hero from '../components/Hero';
-import styled from 'styled-components';
 import Timeline from '../components/Timeline';
 import Sponsors from '../components/Sponsors';
 import Organizers from '../components/Organizers';

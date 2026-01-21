@@ -125,7 +125,7 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('teams');
     const [teams, setTeams] = useState([]);
     const [content, setContent] = useState('');
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true); // Unused
 
     const fetchTeams = async () => {
         try {
@@ -147,9 +147,13 @@ const AdminDashboard = () => {
     };
 
     useEffect(() => {
-        fetchTeams();
-        fetchContent();
-        setLoading(false);
+        // Define async function inside or call outside ones
+        const init = async () => {
+            await fetchTeams();
+            await fetchContent();
+            // setLoading(false);
+        };
+        init();
     }, []);
 
     const updateStatus = async (id, status) => {

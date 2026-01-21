@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -69,11 +69,7 @@ const CTAButton = styled(Link)`
   }
 `;
 
-const pulse = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(0, 255, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
-`;
+
 
 const CyberButton = styled(Link)`
   position: relative;
@@ -129,9 +125,52 @@ const CyberButton = styled(Link)`
   }
 `;
 
+const MobileMenuToggle = styled.button`
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-size: 1.5rem;
+  z-index: 101;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+const MobileMenuOverlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+`;
+
+const MobileNavLink = styled(Link)`
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  
+  &:hover {
+    color: var(--color-primary);
+  }
+`;
+
 const Navbar = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -146,11 +185,15 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
+    setIsMobileMenuOpen(false);
   };
+
+  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   return (
     <Nav className={isScrolled ? 'scrolled' : ''}>
       <Logo to="/">ROBOBLOCKS</Logo>
+
       <NavLinks>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
@@ -161,7 +204,8 @@ const Navbar = () => {
         <NavLink to="/faq">FAQ</NavLink>
       </NavLinks>
 
-      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+      <div className="desktop-auth" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <style>{`@media (max-width: 768px) { .desktop-auth { display: none !important; } }`}</style>
         {currentUser ? (
           <>
             {currentUser.role === 'admin' && (
@@ -179,6 +223,46 @@ const Navbar = () => {
           </>
         )}
       </div>
+
+      <MobileMenuToggle onClick={toggleMenu}>
+        {isMobileMenuOpen ? '✕' : '☰'}
+      </MobileMenuToggle>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <MobileMenuOverlay
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'tween', duration: 0.3 }}
+          >
+            <MobileNavLink to="/" onClick={toggleMenu}>Home</MobileNavLink>
+            <MobileNavLink to="/about" onClick={toggleMenu}>About</MobileNavLink>
+            <MobileNavLink to="/teams" onClick={toggleMenu}>Teams</MobileNavLink>
+            <MobileNavLink to="/gallery" onClick={toggleMenu}>Gallery</MobileNavLink>
+            <MobileNavLink to="/schedule" onClick={toggleMenu}>Schedule</MobileNavLink>
+            <MobileNavLink to="/leaderboard" onClick={toggleMenu}>Leaderboard</MobileNavLink>
+            <MobileNavLink to="/faq" onClick={toggleMenu}>FAQ</MobileNavLink>
+
+            {currentUser ? (
+              <>
+                {currentUser.role === 'admin' && (
+                  <MobileNavLink to="/admin" onClick={toggleMenu} style={{ color: '#ff003c' }}>Admin</MobileNavLink>
+                )}
+                <MobileNavLink to="/dashboard" onClick={toggleMenu}>Dashboard</MobileNavLink>
+                <MobileNavLink as="button" onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                  Logout
+                </MobileNavLink>
+              </>
+            ) : (
+              <>
+                <MobileNavLink to="/login" onClick={toggleMenu} style={{ color: '#0ff' }}>Login</MobileNavLink>
+                <MobileNavLink to="/register" onClick={toggleMenu} style={{ color: 'var(--color-primary)' }}>Register Team</MobileNavLink>
+              </>
+            )}
+          </MobileMenuOverlay>
+        )}
+      </AnimatePresence>
     </Nav>
   );
 };

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const ThemeContext = createContext();
 
@@ -51,14 +51,10 @@ export const themes = {
 };
 
 export const ThemeProvider = ({ children }) => {
-    const [currentTheme, setCurrentTheme] = useState('premium');
-
-    useEffect(() => {
+    const [currentTheme, setCurrentTheme] = useState(() => {
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme && themes[savedTheme]) {
-            setCurrentTheme(savedTheme);
-        }
-    }, []);
+        return (savedTheme && themes[savedTheme]) ? savedTheme : 'premium';
+    });
 
     const switchTheme = (themeName) => {
         if (themes[themeName]) {

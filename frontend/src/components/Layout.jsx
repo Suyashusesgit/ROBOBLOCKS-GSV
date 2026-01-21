@@ -4,8 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import SmoothScroll from '../animations/SmoothScroll';
-import Scene3D from './Scene3D';
+import Feature3D from './Scene3D';
 import PageTransition from './PageTransition';
 
 const Main = styled.main`
@@ -22,16 +21,14 @@ const Layout = () => {
         <>
             <Navbar />
             <Scene3D />
-            <SmoothScroll>
-                <Main>
-                    <AnimatePresence mode="wait">
-                        <PageTransition key={location.pathname}>
-                            <Outlet />
-                        </PageTransition>
-                    </AnimatePresence>
-                </Main>
-                <Footer />
-            </SmoothScroll>
+            <Main>
+                <AnimatePresence mode="wait">
+                    <PageTransition key={location.pathname}>
+                        <Outlet />
+                    </PageTransition>
+                </AnimatePresence>
+            </Main>
+            <Footer />
         </>
     );
 };

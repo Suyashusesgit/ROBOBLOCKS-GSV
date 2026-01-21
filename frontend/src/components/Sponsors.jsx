@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import TiltCard from './TiltCard';
 
 const Section = styled.section`

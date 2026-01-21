@@ -1,16 +1,29 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useScroll, MeshDistortMaterial } from '@react-three/drei';
+import { MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 const ScrollModel = () => {
     const meshRef = useRef(null);
-    const scroll = useScroll();
+    const scrollRef = useRef(0);
 
-    useFrame((state, delta) => {
-        const r1 = scroll.range(0, 1);
-        const r2 = scroll.range(0.2, 0.6); // Middle section range
-        const r3 = scroll.range(0.6, 1); // End section
+    // Sync with window scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = window.scrollY / totalHeight;
+            scrollRef.current = progress;
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useFrame((state) => {
+        const r1 = scrollRef.current; // 0 to 1 progress
+        // Ranges
+        const r2 = Math.max(0, Math.min(1, (r1 - 0.2) / 0.4)); // 0.2 to 0.6 mapped to 0-1
+        // const r3 = Math.max(0, Math.min(1, (r1 - 0.6) / 0.4)); // 0.6 to 1.0 mapped to 0-1
 
         if (meshRef.current) {
             // Complex Rotation
@@ -18,12 +31,11 @@ const ScrollModel = () => {
             meshRef.current.rotation.y = r1 * Math.PI * 4 + state.clock.elapsedTime * 0.1;
 
             // Dynamic Material Color (lerp)
-            // Initial: Cyan (#00f0ff), Mid: Purple/Pink (#ff0080), End: Orange (#ff8000)
             const color = new THREE.Color('#00f0ff');
             if (r1 > 0.5) {
                 color.lerp(new THREE.Color('#ff0080'), (r1 - 0.5) * 2);
             }
-            // meshRef.current.material.color = color; // MeshDistortMaterial handles color prop, better to update via ref if possible or state, but lets try direct prop update on ref if material is accessible
+
             if (meshRef.current.material) {
                 meshRef.current.material.color.lerp(color, 0.1);
                 meshRef.current.material.distort = 0.4 + r2 * 0.4; // More distortion in middle
@@ -47,7 +59,7 @@ const ScrollModel = () => {
                     distort={0.4}
                     speed={2}
                     roughness={0.2}
-                    metalness={0.9} // Shiny, metallic look
+                    metalness={0.9}
                 />
             </mesh>
         </group>

@@ -20,7 +20,7 @@ const Layout = () => {
     return (
         <>
             <Navbar />
-            {/* <Scene3D /> */}
+            <Scene3D />
             <Main>
                 <AnimatePresence mode="wait">
                     <PageTransition key={location.pathname}>

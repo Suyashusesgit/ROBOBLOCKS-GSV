@@ -24,15 +24,14 @@ const Scene3D = () => {
                 <spotLight position={[0, 10, 0]} intensity={2} angle={0.5} penumbra={1} />
 
                 <Suspense fallback={null}>
-                    <Suspense fallback={null}>
-                        {/* Native Scroll via Window Listener in ScrollModel */}
-                        <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-                            <ScrollModel />
-                        </Float>
-                        <Environment preset="city" />
-                        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                        <Sparkles count={100} scale={10} size={4} speed={0.4} opacity={0.5} color="#fff" />
-                    </Suspense>
+                    {/* Native Scroll via Window Listener in ScrollModel */}
+                    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+                        <ScrollModel />
+                    </Float>
+                    <Environment preset="city" />
+                    <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+                    <Sparkles count={100} scale={10} size={4} speed={0.4} opacity={0.5} color="#fff" />
+                </Suspense>
             </Canvas>
         </CanvasContainer>
     );

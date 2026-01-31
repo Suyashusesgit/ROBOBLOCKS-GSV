@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const mongoSanitize = require('express-mongo-sanitize');
+const mongoSanitize = require('./middlewares/mongoSanitize');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const { errorHandler } = require('./middlewares/errorMiddleware');
@@ -13,7 +13,10 @@ const app = express();
 
 // Security Middleware
 app.use(helmet()); // Set security headers
-app.use(cors()); // Enable CORS
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    credentials: true
+})); // Enable CORS with specific origin
 
 // Rate Limiting
 const limiter = rateLimit({
@@ -22,14 +25,14 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+// Body Parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Data Sanitization
 app.use(mongoSanitize()); // Prevent NoSQL injection
 app.use(xss()); // Prevent XSS attacks
 app.use(hpp()); // Prevent HTTP Param Pollution
-
-// Body Parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.get('/', (req, res) => {

@@ -24,7 +24,7 @@ const teamService = {
 
     // Get all teams (Admin only)
     getAllTeams: async () => {
-        const response = await API.get('/teams/public');
+        const response = await API.get('/teams');
         return response.data;
     },
 

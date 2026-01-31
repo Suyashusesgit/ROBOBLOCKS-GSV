@@ -95,7 +95,7 @@ const Table = styled(motion.div)`
 
 const Row = styled.div`
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr 1fr;
+  grid-template-columns: 0.5fr 2fr 2fr 1fr 1fr;
   padding: 1.5rem;
   border-bottom: 1px solid var(--color-border);
   align-items: center;
@@ -247,15 +247,29 @@ const Leaderboard = () => {
             <HeaderRow>
               <div>Rank</div>
               <div>Unit Identifier</div>
-              <div>Origin Sector</div>
-              <div>Performance Index</div>
+              <div>Sector (Institute)</div>
+              <div>Status</div>
+              <div style={{ textAlign: 'right' }}>Performance Index</div>
             </HeaderRow>
             {rest.map((team) => (
               <Row key={team._id || team.rank}>
                 <div style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>#{team.rank}</div>
-                <div>{team.teamName}</div>
+                <div style={{ fontWeight: '500', color: '#fff' }}>{team.teamName}</div>
                 <div style={{ opacity: 0.7 }}>{team.institute}</div>
-                <div style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)' }}>{team.score || 0}</div>
+                <div>
+                  <span style={{
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '4px',
+                    fontSize: '0.7rem',
+                    background: team.paymentStatus === 'verified' ? 'rgba(0, 255, 106, 0.1)' : 'rgba(255, 206, 0, 0.1)',
+                    color: team.paymentStatus === 'verified' ? '#00ff6a' : '#ffce00',
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold'
+                  }}>
+                    {team.paymentStatus === 'verified' ? 'Active' : 'Pending'}
+                  </span>
+                </div>
+                <div style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', textAlign: 'right' }}>{team.score || 0}</div>
               </Row>
             ))}
           </Table>

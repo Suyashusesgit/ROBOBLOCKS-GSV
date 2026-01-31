@@ -145,7 +145,8 @@ const events = [
   { date: "Phase 4", title: "Offline Round", desc: "Grand Finale with working bots at the arena." }
 ];
 
-const Timeline = () => {
+const Timeline = ({ data }) => {
+  const timelineEvents = data || events;
   const containerRef = useRef(null);
   const lineRef = useRef(null);
   const cardRefs = useRef([]);
@@ -194,7 +195,7 @@ const Timeline = () => {
           <ActiveLine ref={lineRef} />
         </LineContainer>
 
-        {events.map((event, index) => (
+        {timelineEvents.map((event, index) => (
           <EventCard
             key={index}
             left={index % 2 === 0}

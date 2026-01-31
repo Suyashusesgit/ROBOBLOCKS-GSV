@@ -81,47 +81,52 @@ const HorizontalScroll = ({ data }) => {
   ];
 
   useEffect(() => {
-    const pin = gsap.fromTo(
-      sectionRef.current,
-      {
-        translateX: 0,
-      },
-      {
-        translateX: `-${(events.length - 1) * 100}vw`,
-        ease: "none",
-        duration: 1,
-        scrollTrigger: {
-          trigger: triggerRef.current,
-          start: "top top",
-          end: `+=${events.length * 1000}`,
-          scrub: 0.6,
-          pin: true,
+    let ctx = gsap.context(() => {
+      gsap.fromTo(
+        sectionRef.current,
+        {
+          translateX: 0,
         },
-      }
-    );
+        {
+          translateX: `-${(events.length - 1) * 100}vw`,
+          ease: "none",
+          duration: 1,
+          scrollTrigger: {
+            trigger: triggerRef.current,
+            start: "top top",
+            end: `+=${events.length * 1000}`,
+            scrub: 0.6,
+            pin: true,
+          },
+        }
+      );
+    }, triggerRef); // Scope to the triggerRef
+
     return () => {
-      pin.kill();
+      ctx.revert(); // This safely cleans up all GSAP animations and ScrollTriggers created in the context
     };
   }, [events.length]);
 
   return (
-    <SectionWrapper ref={triggerRef}>
-      <Container ref={sectionRef} style={{ width: `${events.length * 100}%` }}>
-        {events.map((event, index) => (
-          <Panel key={index}>
-            <Year>{event.year}</Year>
-            <Content>
-              <TextReveal>
-                <Title>{event.title}</Title>
-              </TextReveal>
-              <TextReveal delay={0.2}>
-                <Desc>{event.desc}</Desc>
-              </TextReveal>
-            </Content>
-          </Panel>
-        ))}
-      </Container>
-    </SectionWrapper>
+    <div style={{ overflow: 'hidden' }}>
+      <SectionWrapper ref={triggerRef}>
+        <Container ref={sectionRef} style={{ width: `${events.length * 100}%` }}>
+          {events.map((event, index) => (
+            <Panel key={index}>
+              <Year>{event.year}</Year>
+              <Content>
+                <TextReveal>
+                  <Title>{event.title}</Title>
+                </TextReveal>
+                <TextReveal delay={0.2}>
+                  <Desc>{event.desc}</Desc>
+                </TextReveal>
+              </Content>
+            </Panel>
+          ))}
+        </Container>
+      </SectionWrapper>
+    </div>
   );
 };
 

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import GlassCard from '../components/GlassCard';
 import TextReveal from '../components/TextReveal';
+import teamService from '../services/teamService';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -31,6 +32,7 @@ const TextBlock = styled.p`
   line-height: 1.8;
   color: #ccc;
   margin-bottom: 1.5rem;
+  white-space: pre-line;
 `;
 
 const List = styled.ul`
@@ -49,18 +51,17 @@ const ListItem = styled(motion.li)`
 `;
 
 export const About = () => {
-    const [data, setData] = React.useState({
-        mission: "Loading...",
-        story: "",
-        callToAction: ""
-    });
+    const [data, setData] = React.useState(null);
 
     React.useEffect(() => {
         const load = async () => {
             try {
-                const content = await import('../services/teamService').then(m => m.default.getSiteContent());
+                const content = await teamService.getSiteContent();
                 if (content && content.about) setData(content.about);
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error("About page load error:", e);
+                setData({ mission: "Failed to load briefing.", story: "Please check your neural link connection.", callToAction: "" });
+            }
         };
         load();
     }, []);
@@ -76,9 +77,15 @@ export const About = () => {
                 transition={{ delay: 0.2 }}
             >
                 <GlassCard>
-                    <TextBlock>{data.mission}</TextBlock>
-                    <TextBlock>{data.story}</TextBlock>
-                    <TextBlock>{data.callToAction}</TextBlock>
+                    {data ? (
+                        <>
+                            <TextBlock>{data.mission}</TextBlock>
+                            <TextBlock>{data.story}</TextBlock>
+                            <TextBlock>{data.callToAction}</TextBlock>
+                        </>
+                    ) : (
+                        <div style={{ textAlign: 'center', padding: '2rem' }}>Loading sector data...</div>
+                    )}
                 </GlassCard>
             </ContentWrapper>
         </PageContainer>
@@ -91,7 +98,7 @@ export const Rules = () => {
     React.useEffect(() => {
         const load = async () => {
             try {
-                const content = await import('../services/teamService').then(m => m.default.getSiteContent());
+                const content = await teamService.getSiteContent();
                 if (content && content.rules) setRules(content.rules.map(r => r.text));
             } catch (e) { console.error(e); }
         };

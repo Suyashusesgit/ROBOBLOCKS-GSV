@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import TextReveal from '../components/TextReveal';
-import Tilt from 'react-parallax-tilt';
 import DecryptText from '../components/DecryptText';
+import teamService from '../services/teamService';
 
 const PageContainer = styled.div`
   min-height: 200vh;
@@ -98,8 +98,8 @@ const Schedule = () => {
   React.useEffect(() => {
     const loadContent = async () => {
       try {
-        const content = await import('../services/teamService').then(m => m.default.getSiteContent());
-        if (content && content.schedule) {
+        const content = await teamService.getSiteContent();
+        if (content && Array.isArray(content.schedule)) {
           setEvents(content.schedule);
         }
       } catch (err) {
@@ -149,14 +149,7 @@ const Schedule = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
           >
-            <Tilt
-              tiltMaxAngleX={10}
-              tiltMaxAngleY={10}
-              perspective={1000}
-              scale={1.05}
-              transitionSpeed={1500}
-              className="tilt-card"
-            >
+            <div className="tilt-card" style={{ transition: 'transform 0.3s' }}>
               <div style={{ position: 'relative', zIndex: 1 }}>
                 <Dot
                   initial={{ scale: 0 }}
@@ -167,7 +160,7 @@ const Schedule = () => {
                 <Title>{ev.title}</Title>
                 <Desc>{ev.desc}</Desc>
               </div>
-            </Tilt>
+            </div>
           </EventCard>
         ))}
       </TimelineWrapper>

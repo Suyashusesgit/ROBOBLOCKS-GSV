@@ -86,11 +86,18 @@ const TeamName = styled.div`
   text-overflow: ellipsis;
 `;
 
-const Table = styled(motion.div)`
-  background: #111;
+const TableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 16px;
-  overflow: hidden;
   border: 1px solid var(--color-border);
+  background: #111;
+`;
+
+const Table = styled(motion.div)`
+  min-width: 800px; /* Force minimum width to trigger scroll */
+  background: #111;
 `;
 
 const Row = styled.div`
@@ -239,40 +246,42 @@ const Leaderboard = () => {
             )}
           </PodiumContainer>
 
-          <Table
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <HeaderRow>
-              <div>Rank</div>
-              <div>Unit Identifier</div>
-              <div>Sector (Institute)</div>
-              <div>Status</div>
-              <div style={{ textAlign: 'right' }}>Performance Index</div>
-            </HeaderRow>
-            {rest.map((team) => (
-              <Row key={team._id || team.rank}>
-                <div style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>#{team.rank}</div>
-                <div style={{ fontWeight: '500', color: '#fff' }}>{team.teamName}</div>
-                <div style={{ opacity: 0.7 }}>{team.institute}</div>
-                <div>
-                  <span style={{
-                    padding: '0.2rem 0.5rem',
-                    borderRadius: '4px',
-                    fontSize: '0.7rem',
-                    background: team.paymentStatus === 'verified' ? 'rgba(0, 255, 106, 0.1)' : 'rgba(255, 206, 0, 0.1)',
-                    color: team.paymentStatus === 'verified' ? '#00ff6a' : '#ffce00',
-                    textTransform: 'uppercase',
-                    fontWeight: 'bold'
-                  }}>
-                    {team.paymentStatus === 'verified' ? 'Active' : 'Pending'}
-                  </span>
-                </div>
-                <div style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', textAlign: 'right' }}>{team.score || 0}</div>
-              </Row>
-            ))}
-          </Table>
+          <TableWrapper>
+            <Table
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <HeaderRow>
+                <div>Rank</div>
+                <div>Unit Identifier</div>
+                <div>Sector (Institute)</div>
+                <div>Status</div>
+                <div style={{ textAlign: 'right' }}>Performance Index</div>
+              </HeaderRow>
+              {rest.map((team) => (
+                <Row key={team._id || team.rank}>
+                  <div style={{ fontWeight: 'bold', fontFamily: 'var(--font-heading)' }}>#{team.rank}</div>
+                  <div style={{ fontWeight: '500', color: '#fff' }}>{team.teamName}</div>
+                  <div style={{ opacity: 0.7 }}>{team.institute}</div>
+                  <div>
+                    <span style={{
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '4px',
+                      fontSize: '0.7rem',
+                      background: team.paymentStatus === 'verified' ? 'rgba(0, 255, 106, 0.1)' : 'rgba(255, 206, 0, 0.1)',
+                      color: team.paymentStatus === 'verified' ? '#00ff6a' : '#ffce00',
+                      textTransform: 'uppercase',
+                      fontWeight: 'bold'
+                    }}>
+                      {team.paymentStatus === 'verified' ? 'Active' : 'Pending'}
+                    </span>
+                  </div>
+                  <div style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-heading)', textAlign: 'right' }}>{team.score || 0}</div>
+                </Row>
+              ))}
+            </Table>
+          </TableWrapper>
         </>
       ) : (
         <div style={{ textAlign: 'center', opacity: 0.6 }}>No data available yet via Subspace Relay.</div>

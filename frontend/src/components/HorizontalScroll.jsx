@@ -82,29 +82,26 @@ const HorizontalScroll = ({ data }) => {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      gsap.fromTo(
-        sectionRef.current,
-        {
-          translateX: 0,
-        },
-        {
+      // Only animate on desktop
+      const isDesktop = window.matchMedia("(min-width: 769px)").matches;
+
+      if (isDesktop) {
+        gsap.to(sectionRef.current, {
           translateX: `-${(events.length - 1) * 100}vw`,
           ease: "none",
-          duration: 1,
           scrollTrigger: {
             trigger: triggerRef.current,
             start: "top top",
             end: `+=${events.length * 1000}`,
             scrub: 0.6,
             pin: true,
+            invalidateOnRefresh: true,
           },
-        }
-      );
-    }, triggerRef); // Scope to the triggerRef
+        });
+      }
+    }, triggerRef);
 
-    return () => {
-      ctx.revert(); // This safely cleans up all GSAP animations and ScrollTriggers created in the context
-    };
+    return () => ctx.revert();
   }, [events.length]);
 
   return (

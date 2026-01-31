@@ -14,7 +14,11 @@ const app = express();
 // Security Middleware
 app.use(helmet()); // Set security headers
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        process.env.FRONTEND_URL // Allow Vercel deployment
+    ].filter(Boolean), // Remove undefined if env var is missing
     credentials: true
 })); // Enable CORS with specific origin
 

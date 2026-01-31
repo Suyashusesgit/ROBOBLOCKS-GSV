@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
-const xss = require('xss-clean');
+// const xss = require('xss-clean');
 const mongoSanitize = require('./middlewares/mongoSanitize');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
@@ -17,6 +17,10 @@ app.use(cors({
     origin: [
         'http://localhost:5173',
         'http://127.0.0.1:5173',
+        'http://localhost:5174',
+        'http://127.0.0.1:5174',
+        'http://localhost:5175',
+        'http://127.0.0.1:5175',
         'https://roboblocks-gsv.vercel.app', // Explicitly allow your Vercel URL
         process.env.FRONTEND_URL
     ].filter(Boolean),
@@ -38,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Data Sanitization
 app.use(mongoSanitize()); // Prevent NoSQL injection
-app.use(xss()); // Prevent XSS attacks
+// app.use(xss()); // Removed: Incompatible with Express 5
 app.use(hpp()); // Prevent HTTP Param Pollution
 
 // Routes

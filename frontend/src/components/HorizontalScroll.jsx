@@ -7,16 +7,27 @@ import TextReveal from './TextReveal';
 gsap.registerPlugin(ScrollTrigger);
 
 const Container = styled.div`
-  width: 300%; /* 3 full screen widths */
+  width: 300%;
   height: 100vh;
   display: flex;
   flex-wrap: nowrap;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+  }
 `;
 
 const SectionWrapper = styled.div`
   width: 100%;
   height: 100vh;
-  overflow: hidden; /* Hide overflow to allow pinning */
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: auto;
+    overflow: visible;
+  }
 `;
 
 const Panel = styled.div`
@@ -32,6 +43,14 @@ const Panel = styled.div`
   
   &:nth-child(odd) {
     background: rgba(255, 255, 255, 0.02);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 `;
 
@@ -82,25 +101,24 @@ const HorizontalScroll = ({ data }) => {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      gsap.fromTo(
-        sectionRef.current,
-        {
-          translateX: 0,
-        },
-        {
+      // Only animate on desktop
+      const isDesktop = window.matchMedia("(min-width: 769px)").matches;
+
+      if (isDesktop) {
+        gsap.to(sectionRef.current, {
           translateX: `-${(events.length - 1) * 100}vw`,
           ease: "none",
-          duration: 1,
           scrollTrigger: {
             trigger: triggerRef.current,
             start: "top top",
             end: `+=${events.length * 1000}`,
             scrub: 0.6,
             pin: true,
+            invalidateOnRefresh: true,
           },
-        }
-      );
-    }, triggerRef); // Scope to the triggerRef
+        });
+      }
+    }, triggerRef);
 
     return () => {
       ctx.revert(); // This safely cleans up all GSAP animations and ScrollTriggers created in the context

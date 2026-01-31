@@ -91,6 +91,8 @@ const Table = styled(motion.div)`
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--color-border);
+  overflow-x: auto; /* Enable horizontal scroll */
+  -webkit-overflow-scrolling: touch;
 `;
 
 const Row = styled.div`
@@ -100,6 +102,7 @@ const Row = styled.div`
   border-bottom: 1px solid var(--color-border);
   align-items: center;
   transition: background 0.2s;
+  min-width: 800px; /* Force scroll on small screens */
 
   &:last-child {
     border-bottom: none;

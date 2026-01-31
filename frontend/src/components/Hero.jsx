@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 
 const HeroSection = styled.section`
   height: 100vh;
+  height: 100svh; /* Better for mobile browsers */
   width: 100%;
   display: flex;
   flex-direction: column;

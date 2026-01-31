@@ -11,10 +11,6 @@ const SmoothScroll = ({ children }) => {
     useEffect(() => {
         let lenis;
         try {
-            // Disable on touch devices for performance
-            const isTouch = window.matchMedia('(pointer: coarse)').matches;
-            if (isTouch) return;
-
             lenis = new Lenis({
                 duration: 1.5,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

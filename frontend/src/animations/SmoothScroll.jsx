@@ -12,14 +12,14 @@ const SmoothScroll = ({ children }) => {
         let lenis;
         try {
             lenis = new Lenis({
-                duration: 1.2,
+                duration: 1.5,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                 direction: 'vertical',
                 gestureDirection: 'vertical',
                 smooth: true,
                 mouseMultiplier: 1,
                 smoothTouch: false,
-                touchMultiplier: 2,
+                touchMultiplier: 1.5,
             });
         } catch (e) {
             console.error("SmoothScroll initialization failed:", e);

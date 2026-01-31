@@ -29,6 +29,11 @@ const GalleryGrid = styled.div`
   padding: 20vh 0;
   align-items: center;
   transform-style: preserve-3d;
+
+  @media (max-width: 768px) {
+    padding: 15vh 0;
+    gap: 10vh;
+  }
 `;
 
 const ImageWrapper = styled(motion.div)`
@@ -42,6 +47,11 @@ const ImageWrapper = styled(motion.div)`
   box-shadow: 0 20px 50px rgba(0,0,0,0.8);
   background: #000;
   border: 1px solid var(--color-border);
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    height: 60vw;
+  }
   
   img {
     width: 100%;

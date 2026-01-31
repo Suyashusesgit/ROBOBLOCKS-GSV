@@ -9,6 +9,10 @@ import teamService from '../services/teamService';
 const PageContainer = styled.div`
   min-height: 100vh;
   padding: 8rem 2rem;
+  
+  @media (max-width: 768px) {
+    padding: 6rem 1.5rem;
+  }
   display: flex;
   flex-direction: column;
   align-items: center;
